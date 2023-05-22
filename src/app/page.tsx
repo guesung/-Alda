@@ -1,21 +1,9 @@
 "use client";
-// import all entrypoints to test, do not do this in your own app
 import "../entrypoints.js";
-
 import Head from "next/head";
 import { useState } from "react";
-
-// Don't do this in your app, it would leak your API key
-const OPENAI_API_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
-
 import { chain } from "@/lib/chat";
 import { promptInformation } from "@/lib/prompt";
-import { AIChatMessage, HumanChatMessage } from "langchain/schema";
-
-const pastMessages = [
-  new HumanChatMessage("My name's Jonas"),
-  new AIChatMessage("Nice to meet you, Jonas!"),
-];
 
 const bufferMemoryChat = async () => {
   const res = await chain(promptInformation).call({ 약: "타이레놀" });
