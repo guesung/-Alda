@@ -3,16 +3,25 @@ import "../entrypoints.js";
 import Head from "next/head";
 import { useState } from "react";
 import { chain } from "@/lib/chat";
-import { promptInformation } from "@/lib/prompt";
-
-const bufferMemoryChat = async () => {
-  const res = await chain(promptInformation).call({ 약: "타이레놀" });
-  console.log(res);
-};
-bufferMemoryChat();
+import { promptHelper, promptInformation } from "@/lib/prompt";
 
 export default function Home() {
-  const [state, setState] = useState();
+  const [state, setState] = useState<string>("");
+  const [botMessage, setBotMessage] = useState<string>("");
+
+  const bufferMemoryChat = async () => {
+    const res = await chain(promptHelper).call(
+      {
+        text: "나 배가 아파. 약 뭐먹어야 돼?",
+      },
+      [
+        {
+          handleLLMNewToken: async (token) =>
+            setBotMessage((message) => message + token),
+        },
+      ]
+    );
+  };
 
   return (
     <>
@@ -29,7 +38,9 @@ export default function Home() {
           }}
         />
         <button>Click to run a chain</button>
+        <div>{botMessage}</div>
       </form>
+      <button onClick={bufferMemoryChat}>click</button>
     </>
   );
 }
