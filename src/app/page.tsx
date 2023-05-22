@@ -4,7 +4,7 @@ import "../entrypoints.js";
 
 import Head from "next/head";
 import styles from "./styles/Home.module.css";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { ChatOpenAI } from "langchain/chat_models/openai";
 import { CallbackManager } from "langchain/callbacks";
 import { LLMChain } from "langchain/chains";
@@ -12,19 +12,21 @@ import {
   ChatPromptTemplate,
   HumanMessagePromptTemplate,
 } from "langchain/prompts";
+import { HumanChatMessage } from "../entrypoints.js";
 
 // Don't do this in your app, it would leak your API key
 const OPENAI_API_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
 
 export default function Home() {
-  const runChain = useCallback(async () => {
+  const runChain = useCallback(async (e) => {
+    e.preventDefault();
     const llm = new ChatOpenAI({
       openAIApiKey: OPENAI_API_KEY,
       streaming: true,
-      // callbackManager: CallbackManager.fromHandlers({
-      //   handleLLMNewToken: async (token) =>
-      //     console.log("handleLLMNewToken", token),
-      // }),
+      callbackManager: CallbackManager.fromHandlers({
+        handleLLMNewToken: async (token) =>
+          console.log("handleLLMNewToken", token),
+      }),
     });
 
     // Test count tokens
@@ -38,10 +40,16 @@ export default function Home() {
         HumanMessagePromptTemplate.fromTemplate("{input}"),
       ]),
     });
-    const res = await chain.run("what is nextjs?");
+    const res = await chain.run(state);
 
     console.log("runChain", res);
   }, []);
+
+  const [state, setState] = useState();
+  const handleInput = (e) => {
+    setState(e.target.value);
+  };
+  console.log(state);
 
   return (
     <>
@@ -51,9 +59,10 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
-        <button onClick={runChain}>Click to run a chain</button>
-      </main>
+      <form onSubmit={runChain}>
+        <input onChange={handleInput} />
+        <button>Click to run a chain</button>
+      </form>
     </>
   );
 }
