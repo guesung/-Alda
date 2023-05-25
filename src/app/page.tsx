@@ -3,7 +3,7 @@ import "@utils/entrypoints.js";
 import Head from "next/head";
 import { useState } from "react";
 import { chain } from "@utils/chat";
-import { promptHelper } from "@utils/prompt.ts";
+import { promptHelper } from "@utils/prompt";
 
 export default function Home() {
   const [state, setState] = useState<string>("");

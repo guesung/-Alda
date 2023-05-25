@@ -5,12 +5,12 @@ import { EntityMemory } from "langchain/memory";
 
 const OPENAI_API_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
 
-const model = new ChatOpenAI({
+export const model = new ChatOpenAI({
   openAIApiKey: OPENAI_API_KEY,
   streaming: true,
 });
 
-const memory = new EntityMemory({
+export const memory = new EntityMemory({
   llm: model,
   chatHistoryKey: "history",
   entitiesKey: "entities",
