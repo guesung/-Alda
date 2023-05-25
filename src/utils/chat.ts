@@ -16,7 +16,7 @@ const memory = new EntityMemory({
   entitiesKey: "entities",
 });
 
-export const chain = (promptType) => {
+export const chain = (promptType: any) => {
   return new LLMChain({
     llm: model,
     prompt: promptType,

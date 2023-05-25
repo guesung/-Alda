@@ -1,9 +1,9 @@
 "use client";
-import "../entrypoints.js";
+import "@utils/entrypoints.js";
 import Head from "next/head";
 import { useState } from "react";
-import { chain } from "@/lib/chat";
-import { promptHelper, promptInformation } from "@/lib/prompt";
+import { chain } from "@utils/chat";
+import { promptHelper } from "@utils/prompt.ts";
 
 export default function Home() {
   const [state, setState] = useState<string>("");
@@ -16,11 +16,12 @@ export default function Home() {
       },
       [
         {
-          handleLLMNewToken: async (token) =>
+          handleLLMNewToken: async (token: any) =>
             setBotMessage((message) => message + token),
         },
       ]
     );
+    console.log(res);
   };
 
   return (
