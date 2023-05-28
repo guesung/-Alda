@@ -7,6 +7,7 @@ import { use, useEffect, useState } from "react";
 const configuration = new Configuration({
   apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
 });
+const APIURL = "https://api.openai.com/v1/chat/completions";
 const openai = new OpenAIApi(configuration);
 
 interface csvDataType {
@@ -44,11 +45,46 @@ const createChatCompletion = async (
 
   console.log(messageData);
 
-  const completion = await openai.createChatCompletion({
-    model: "gpt-3.5-turbo",
-    messages: messageData as any,
+  const response = await fetch(APIURL, {
+    method: "POST",
+    body: JSON.stringify({
+      model: "gpt-3.5-turbo",
+      messages: messageData as any,
+      max_tokens: 200,
+      temperature: 0.7,
+      stream: true,
+      top_p: 1,
+      presence_penalty: 0,
+      n: 1,
+      frequency_penalty: 0,
+    }),
+
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
+    },
   });
-  console.log(completion.data.choices[0].message);
+  if (!response.body) return;
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder("utf-8");
+  while (true) {
+    const chunk = await reader.read();
+    const { done, value } = chunk;
+    if (done) break;
+    const decodedCunk = decoder.decode(value);
+    const lines = decodedCunk.split("\n");
+    const parse = lines.map((line) => line[0]);
+    const parsedLines = lines
+      .map((line) => line.replace(/^data: /, "").trim())
+      .filter((line) => line !== "" && line !== "[DONE]")
+      .map((line) => JSON.parse(line));
+    for (const parsedLine of parsedLines) {
+      const { choices } = parsedLine;
+      const { delta } = choices[0];
+      const { content } = delta;
+      if (content) console.log(content);
+    }
+  }
 };
 
 export default function Page() {
@@ -56,6 +92,7 @@ export default function Page() {
   const [contentList, setContentList] = useState<string[]>([]);
   const [nameList, setNameList] = useState<string[]>([]);
   const [autoFill, setAutoFill] = useState<string>("");
+
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await axios("/api/get-data");
