@@ -61,11 +61,13 @@ export default function Page() {
       const { data } = await axios("/api/get-data");
       setContentList(data.map((it: csvDataType) => it.pageContent));
       setNameList(
-        contentList.map((it: string) => it.split("\n")[3].split(":")[1])
+        data.map(
+          (it: csvDataType) => it.pageContent.split("\n")[3].split(":")[1]
+        )
       );
     };
     fetchData();
-  }, [contentList]);
+  }, []); // 종속성 배열에서 contentList를 제거
 
   useEffect(() => {
     if (drugInput.length > 0) {
@@ -78,7 +80,7 @@ export default function Page() {
     } else {
       setAutoFill("");
     }
-  }, [drugInput, nameList,contentList]);
+  }, [drugInput, nameList, contentList]);
 
   return (
     <div>
