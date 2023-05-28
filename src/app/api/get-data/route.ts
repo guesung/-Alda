@@ -8,6 +8,5 @@ const embedding = new OpenAIEmbeddings({ openAIApiKey: OPENAI_API_KEY });
 export async function GET() {
   const loader = new CSVLoader("public/data.csv");
   const docs = await loader.load();
-  console.log(docs);
   return NextResponse.json(docs);
 }
