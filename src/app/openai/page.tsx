@@ -38,8 +38,6 @@ const createChatCompletion = async () => {
 
 export default function Page() {
   return (
-    <div>
-      hello<button onClick={createChatCompletion}>클릭</button>
-    </div>
+    <div>{/* hello<button onClick={createChatCompletion}>클릭</button> */}</div>
   );
 }

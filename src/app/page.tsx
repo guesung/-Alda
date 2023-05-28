@@ -43,7 +43,7 @@ export default function Page() {
         onSubmit={(e) => {
           e.preventDefault();
           if (!inputRef.current) return;
-          runQAMapReduceChain("주어진 자료에서 " + inputRef.current.value);
+          // runQAMapReduceChain("주어진 자료에서 " + inputRef.current.value);
         }}
       >
         <input
