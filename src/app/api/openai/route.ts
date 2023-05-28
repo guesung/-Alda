@@ -18,6 +18,6 @@ const upLoadFile = async () => {
 };
 
 export async function GET() {
-  upLoadFile();
+  // upLoadFile();
   return NextResponse.json({ message: "Hello World" });
 }
