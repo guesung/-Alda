@@ -21,7 +21,8 @@ interface csvDataType {
 const createChatCompletion = async (
   nameList: string[],
   contentList: string[],
-  inputValue: string
+  inputValue: string,
+  setAnswer: (answer: any) => void
 ) => {
   const messageData = [
     {
@@ -82,7 +83,7 @@ const createChatCompletion = async (
       const { choices } = parsedLine;
       const { delta } = choices[0];
       const { content } = delta;
-      if (content) console.log(content);
+      if (content) setAnswer((answer: string) => answer + content);
     }
   }
 };
@@ -92,6 +93,7 @@ export default function Page() {
   const [contentList, setContentList] = useState<string[]>([]);
   const [nameList, setNameList] = useState<string[]>([]);
   const [autoFill, setAutoFill] = useState<string>("");
+  const [answer, setAnswer] = useState<string>("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -124,7 +126,7 @@ export default function Page() {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          createChatCompletion(nameList, contentList, drugInput);
+          createChatCompletion(nameList, contentList, drugInput, setAnswer);
         }}
       >
         <input
@@ -136,6 +138,7 @@ export default function Page() {
         <button>Click to run a chain</button>
       </form>
       <div>{autoFill}</div>
+      <div>{answer}</div>
     </div>
   );
 }
