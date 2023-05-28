@@ -17,11 +17,11 @@ interface csvDataType {
   pageContent: string;
 }
 
-const createChatCompletion = async (database:csvDataType[], inputValue: string) => {
-  const contentList = database.map((it: csvDataType) => it.pageContent);
-  const nameList = contentList.map(
-    (it: string) => it.split("\n")[3].split(":")[1]
-  );
+const createChatCompletion = async (
+  nameList: string[],
+  contentList: string[],
+  inputValue: string
+) => {
   const messageData = [
     {
       role: "system",
@@ -53,20 +53,39 @@ const createChatCompletion = async (database:csvDataType[], inputValue: string) 
 
 export default function Page() {
   const [drugInput, setDrugInput] = useState<string>("");
-  const [database, setDatabase] = useState<csvDataType[]>([]);
+  const [contentList, setContentList] = useState<string[]>([]);
+  const [nameList, setNameList] = useState<string[]>([]);
+  const [autoFill, setAutoFill] = useState<string>("");
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await axios("/api/get-data");
-      setDatabase(data);
+      setContentList(data.map((it: csvDataType) => it.pageContent));
+      setNameList(
+        contentList.map((it: string) => it.split("\n")[3].split(":")[1])
+      );
     };
     fetchData();
-  }, []);
+  }, [contentList]);
+
+  useEffect(() => {
+    if (drugInput.length > 0) {
+      const findDrugIndex = nameList.findIndex((it: string) =>
+        it.includes(drugInput)
+      );
+      if (findDrugIndex) {
+        setAutoFill(contentList[findDrugIndex]);
+      }
+    } else {
+      setAutoFill("");
+    }
+  }, [drugInput, nameList,contentList]);
+
   return (
     <div>
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          createChatCompletion(database, drugInput);
+          createChatCompletion(nameList, contentList, drugInput);
         }}
       >
         <input
@@ -77,6 +96,7 @@ export default function Page() {
         />
         <button>Click to run a chain</button>
       </form>
+      <div>{autoFill}</div>
     </div>
   );
 }
