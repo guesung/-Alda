@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 interface propsType {
   nameList: string[];
@@ -9,8 +10,6 @@ function Header({ nameList, drugInput, setDrugInput }: propsType) {
     []
   );
   const [keywordIndex, setKeywordIndex] = useState<number>(0);
-
-  console.log(keywordIndex);
 
   const updateData = () => {
     const b = nameList.filter((name) => name.includes(drugInput));
@@ -27,7 +26,6 @@ function Header({ nameList, drugInput, setDrugInput }: propsType) {
   }, [drugInput]);
 
   const controlKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    // console.log(e.keyCode)
     switch (e.keyCode) {
       case 38: // UP
         if (keywordIndex === 0) break;
@@ -42,6 +40,7 @@ function Header({ nameList, drugInput, setDrugInput }: propsType) {
         break;
     }
   };
+  console.log(keywordIndex);
   return (
     <div>
       <input
@@ -55,7 +54,15 @@ function Header({ nameList, drugInput, setDrugInput }: propsType) {
       />
       <div>
         {autoCompleteWordList.map((word: string, id: number) => (
-          <div key={id}>{word}</div>
+          <div
+            key={id}
+            className={clsx(
+              "bg-amber-200",
+              id === keywordIndex && "bg-gray-100"
+            )}
+          >
+            {word}
+          </div>
         ))}
       </div>
     </div>
