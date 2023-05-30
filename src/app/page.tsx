@@ -52,7 +52,7 @@ export default function Page() {
           width={500}
           type="text"
         />
-        <button>Click to run a chain</button>
+        <button >Click to run a chain</button>
       </form>
       <div>{botMessage}</div>
     </div>
