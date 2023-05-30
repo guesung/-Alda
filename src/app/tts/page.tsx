@@ -1,16 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { makeTTS } from "@utils/makeTTS";
 
 export default function Page() {
-  const msg = new SpeechSynthesisUtterance("안녕하세요 저는 박규성입니다.");
-  const speechHandler = (msg: any) => {
-    window.speechSynthesis.speak(msg);
-  };
-
   return (
     <div>
-      <button onClick={() => speechHandler(msg)}>SPEAK</button>
+      <button onClick={() => makeTTS("안녕하세요, 저는 박규성입니다.")}>
+        SPEAK
+      </button>
     </div>
   );
 }
