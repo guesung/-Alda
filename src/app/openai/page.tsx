@@ -135,7 +135,7 @@ export default function Page() {
           type="text"
           onChange={(e) => setDrugInput(e.target.value)}
         />
-        <button>Click to run a chain</button>
+        <button className="bg-red">Click to run a chain</button>
       </form>
       <div>{autoFill}</div>
       <div>{answer}</div>
