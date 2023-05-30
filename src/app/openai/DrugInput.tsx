@@ -1,4 +1,4 @@
-'use-client'
+'use client'
 import clsx from "clsx";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 interface propsType {
