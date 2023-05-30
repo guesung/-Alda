@@ -141,7 +141,7 @@ export default function Page() {
       <div>{autoFill}</div>
       <div>{answer}</div>
 
-      <DrugInput />
+      <DrugInput nameList={nameList} />
     </div>
   );
 }
