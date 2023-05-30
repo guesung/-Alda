@@ -94,7 +94,6 @@ export default function Page() {
   const [contentList, setContentList] = useState<string[]>([]);
   const [nameList, setNameList] = useState<string[]>([]);
   const [answer, setAnswer] = useState<string>("");
-  console.log(drugInput);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -107,7 +106,7 @@ export default function Page() {
       );
     };
     fetchData();
-  }, []); // 종속성 배열에서 contentList를 제거
+  }, []);
 
   return (
     <div>
