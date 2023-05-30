@@ -3,6 +3,7 @@
 import axios from "axios";
 import { Configuration, OpenAIApi } from "openai";
 import { use, useEffect, useState } from "react";
+import DrugInput from "./DrugInput";
 
 const configuration = new Configuration({
   apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
@@ -139,6 +140,8 @@ export default function Page() {
       </form>
       <div>{autoFill}</div>
       <div>{answer}</div>
+
+      <DrugInput />
     </div>
   );
 }
