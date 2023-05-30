@@ -1,31 +1,34 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 interface propsType {
   nameList: string[];
+  drugInput: string;
+  setDrugInput: Dispatch<SetStateAction<string>>;
 }
-function Header({ nameList }: propsType) {
+function Header({ nameList, drugInput, setDrugInput }: propsType) {
   const [autoCompleteWord, setAutoCompleteWord] = useState<string[]>([]);
-  const [keyword, setKeyword] = useState<string>("");
 
   const updateData = () => {
-    const b = nameList.filter((name) => name.includes(keyword));
+    const b = nameList.filter((name) => name.includes(drugInput));
     setAutoCompleteWord(b);
   };
 
   useEffect(() => {
     const debounce = setTimeout(() => {
-      if (keyword) updateData();
+      if (drugInput) updateData();
     }, 200);
     return () => {
       clearTimeout(debounce);
     };
-  }, [keyword]);
+  }, [drugInput]);
 
   return (
     <div>
       <input
         onChange={(e) => {
-          setKeyword(e.target.value);
+          setDrugInput(e.target.value);
         }}
+        defaultValue={"세크로정"}
+        type="text"
       />
       <div>
         {autoCompleteWord.map((word: string, id: number) => (

@@ -19,7 +19,7 @@ interface csvDataType {
   pageContent: string;
 }
 
-const createChatCompletion = async (
+const runOpenAI = async (
   nameList: string[],
   contentList: string[],
   inputValue: string,
@@ -93,8 +93,8 @@ export default function Page() {
   const [drugInput, setDrugInput] = useState<string>("");
   const [contentList, setContentList] = useState<string[]>([]);
   const [nameList, setNameList] = useState<string[]>([]);
-  const [autoFill, setAutoFill] = useState<string>("");
   const [answer, setAnswer] = useState<string>("");
+  console.log(drugInput);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -109,39 +109,22 @@ export default function Page() {
     fetchData();
   }, []); // 종속성 배열에서 contentList를 제거
 
-  useEffect(() => {
-    if (drugInput.length > 0) {
-      const findDrugIndex = nameList.findIndex((it: string) =>
-        it.includes(drugInput)
-      );
-      if (findDrugIndex) {
-        setAutoFill(contentList[findDrugIndex]);
-      }
-    } else {
-      setAutoFill("");
-    }
-  }, [drugInput, nameList, contentList]);
-
   return (
     <div>
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          createChatCompletion(nameList, contentList, drugInput, setAnswer);
+          runOpenAI(nameList, contentList, drugInput, setAnswer);
         }}
       >
-        <input
-          defaultValue={"세크로정"}
-          width={500}
-          type="text"
-          onChange={(e) => setDrugInput(e.target.value)}
+        <DrugInput
+          nameList={nameList}
+          drugInput={drugInput}
+          setDrugInput={setDrugInput}
         />
-        <button>Click to run a chain</button>
+        <button type="submit">Click to run a chain</button>
       </form>
-      <div>{autoFill}</div>
       <div>{answer}</div>
-
-      <DrugInput nameList={nameList} />
     </div>
   );
 }
