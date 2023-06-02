@@ -1,15 +1,51 @@
-"use client";
-import ChatMessage from "@components/chatMessage";
-import ChatInput from "./chatInput";
+import { useRecoilState } from "recoil";
+import ChatInput from "./ChatInput";
+import ChatMessageList from "./ChatMessageList";
+import Header from "./Header";
 
-export default function Page() {
+interface csvDataType {
+  metaData: {
+    source: string;
+    line: number;
+  };
+  pageContent: string;
+}
+
+const GETDATAURL = `${process.env.NEXT_PUBLIC_API_URL}/api/get-data`;
+
+async function getData() {
+  const res = await fetch(GETDATAURL);
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+  return res.json();
+}
+
+const CHAT_MESSAGE_LIST = [
+  {
+    id: 1,
+    message: "안녕하세요.\nAI 챗봇 알다입니다. \n약 이름을 입력 해주세요.  ",
+    isMine: false,
+  },
+  {
+    id: 2,
+    message: "타이레놀",
+    isMine: true,
+  },
+];
+
+export default async function Page() {
+  const data = await getData();
+  const contentList: string[] = data.map((it: csvDataType) => it.pageContent);
+  const nameList: string[] = data.map(
+    (it: csvDataType) => it.pageContent.split("\n")[3].split(":")[1]
+  );
+
   return (
     <div>
-      <ChatMessage
-        message={`안녕하세요.\nAI 챗봇 알다입니다. \n약 이름을 입력 해주세요.  `}
-        isMine={true}
-      />
-      <ChatInput />
+      <Header />
+      <ChatMessageList chatMessageListProps={CHAT_MESSAGE_LIST} />
+      <ChatInput nameList={nameList} contentList={contentList} />
     </div>
   );
 }
