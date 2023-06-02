@@ -1,6 +1,6 @@
 import ChatMessageList from "./ChatMessageList";
 import Header from "./Header";
-import ChatInput from "../../components/ChatInput";
+import ChatInput from "./ChatInput";
 const GETDATAURL = `${process.env.NEXT_PUBLIC_API_URL}/api/get-data`;
 
 interface csvDataType {
