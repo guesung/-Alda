@@ -1,29 +1,13 @@
-"use client";
+import { chatMessageType } from "types/chat";
 
-import axios from "axios";
-import { Configuration, OpenAIApi } from "openai";
-import { use, useEffect, useState } from "react";
-import DrugInput from "./DrugInput";
-
-const configuration = new Configuration({
-  apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
-});
 const APIURL = "https://api.openai.com/v1/chat/completions";
-const openai = new OpenAIApi(configuration);
 
-interface csvDataType {
-  metaData: {
-    source: string;
-    line: number;
-  };
-  pageContent: string;
-}
-
-const runOpenAI = async (
+export const runOpenAI = async (
   nameList: string[],
   contentList: string[],
   inputValue: string,
-  setAnswer: (answer: any) => void
+  chatMessageListState: chatMessageType[],
+  setChatMessageListState: (answer: any) => void
 ) => {
   const messageData = [
     {
@@ -44,8 +28,6 @@ const runOpenAI = async (
   const findDrug = contentList[findDrugIndex];
 
   messageData.push({ role: "system", content: findDrug });
-
-  console.log(messageData);
 
   const response = await fetch(APIURL, {
     method: "POST",
@@ -69,6 +51,7 @@ const runOpenAI = async (
   if (!response.body) return;
   const reader = response.body.getReader();
   const decoder = new TextDecoder("utf-8");
+  let isFirst = true;
   while (true) {
     const chunk = await reader.read();
     const { done, value } = chunk;
@@ -84,46 +67,25 @@ const runOpenAI = async (
       const { choices } = parsedLine;
       const { delta } = choices[0];
       const { content } = delta;
-      if (content) setAnswer((answer: string) => answer + content);
+      if (content) {
+        if (isFirst) {
+          console.log(1);
+          setChatMessageListState((prev: chatMessageType[]) => [
+            ...chatMessageListState,
+            { id: chatMessageListState.length + 1, message: "", isMine: false },
+          ]);
+          isFirst = false;
+        } else {
+          setChatMessageListState((prev: chatMessageType[]) => [
+            ...prev.slice(0, prev.length - 1),
+            {
+              id: prev.length,
+              message: prev[prev.length - 1].message + content,
+              isMine: false,
+            },
+          ]);
+        }
+      }
     }
   }
 };
-
-export default function Page() {
-  const [drugInput, setDrugInput] = useState<string>("");
-  const [contentList, setContentList] = useState<string[]>([]);
-  const [nameList, setNameList] = useState<string[]>([]);
-  const [answer, setAnswer] = useState<string>("");
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const { data } = await axios("/api/get-data");
-      setContentList(data.map((it: csvDataType) => it.pageContent));
-      setNameList(
-        data.map(
-          (it: csvDataType) => it.pageContent.split("\n")[3].split(":")[1]
-        )
-      );
-    };
-    fetchData();
-  }, []);
-
-  return (
-    <div>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          runOpenAI(nameList, contentList, drugInput, setAnswer);
-        }}
-      >
-        <DrugInput
-          nameList={nameList}
-          drugInput={drugInput}
-          setDrugInput={setDrugInput}
-        />
-        <button type="submit">Click to run a chain</button>
-      </form>
-      <div>{answer}</div>
-    </div>
-  );
-}

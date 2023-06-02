@@ -23,8 +23,7 @@
     "paths": {
       "@components/*": ["./components/*"],
       "@apis/*": ["./apis/*"],
-      "@constants/*": ["./constants/*"],
-      "@features/*": ["./features/*"],
+      "@app/*": ["./app/*"],
       "@hooks/*": ["./hooks/*"],
       "@utils/*": ["./utils/*"],
       "@public/*": ["../public/*"],

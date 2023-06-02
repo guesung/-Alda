@@ -13,7 +13,6 @@ const upLoadFile = async () => {
     fs.createReadStream("public/data4.jsonl"),
     "fine-tune"
   );
-  console.log(response);
   return response;
 };
 
