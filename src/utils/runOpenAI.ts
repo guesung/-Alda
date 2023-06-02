@@ -29,8 +29,6 @@ export const runOpenAI = async (
 
   messageData.push({ role: "system", content: findDrug });
 
-  // console.log(messageData);
-
   const response = await fetch(APIURL, {
     method: "POST",
     body: JSON.stringify({
@@ -53,6 +51,7 @@ export const runOpenAI = async (
   if (!response.body) return;
   const reader = response.body.getReader();
   const decoder = new TextDecoder("utf-8");
+  let isFirst = true;
   while (true) {
     const chunk = await reader.read();
     const { done, value } = chunk;
@@ -68,20 +67,20 @@ export const runOpenAI = async (
       const { choices } = parsedLine;
       const { delta } = choices[0];
       const { content } = delta;
-      // if (content) console.log(content, chatMessageListState);
-
       if (content) {
-        if (chatMessageListState[chatMessageListState.length - 1].isMine) {
-          setChatMessageListState(() => [
+        if (isFirst) {
+          console.log(1);
+          setChatMessageListState((prev: chatMessageType[]) => [
             ...chatMessageListState,
-            { id: chatMessageListState.length, message: "", isMine: false },
+            { id: chatMessageListState.length + 1, message: "", isMine: false },
           ]);
+          isFirst = false;
         } else {
-          setChatMessageListState(() => [
-            ...chatMessageListState.slice(0, chatMessageListState.length - 1),
+          setChatMessageListState((prev: chatMessageType[]) => [
+            ...prev.slice(0, prev.length - 1),
             {
-              id: chatMessageListState.length - 1,
-              message: content,
+              id: prev.length,
+              message: prev[prev.length - 1].message + content,
               isMine: false,
             },
           ]);

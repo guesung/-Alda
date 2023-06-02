@@ -2,7 +2,7 @@
 
 import { runOpenAI } from "@utils/runOpenAI";
 import Image from "next/image";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useRecoilState } from "recoil";
 import { chatMessageListState } from "store";
 
@@ -11,9 +11,11 @@ interface PropsType {
   contentList: string[];
 }
 
-export default function ChatInput({ nameList, contentList }: PropsType) {
+export default React.memo(function ChatInput({
+  nameList,
+  contentList,
+}: PropsType) {
   const [input, setInput] = useState<string>("");
-  const [answer, setAnswer] = useState<string>("");
   const [chatMessageList, setChatMessageList] =
     useRecoilState(chatMessageListState);
 
@@ -34,6 +36,7 @@ export default function ChatInput({ nameList, contentList }: PropsType) {
       ],
       setChatMessageList
     );
+    setInput("");
   };
   return (
     <form
@@ -68,4 +71,4 @@ export default function ChatInput({ nameList, contentList }: PropsType) {
       </button>
     </form>
   );
-}
+});

@@ -15,7 +15,7 @@ export default function ChatMessageList({ chatMessageListProps }: PropsType) {
     useRecoilState(chatMessageListState);
   useEffect(() => {
     setChatMessageList(chatMessageListProps);
-  }, []);
+  }, [chatMessageListProps, setChatMessageList]);
 
   return (
     <article>

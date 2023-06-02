@@ -1,7 +1,7 @@
-import { useRecoilState } from "recoil";
 import ChatInput from "./ChatInput";
 import ChatMessageList from "./ChatMessageList";
 import Header from "./Header";
+const GETDATAURL = `${process.env.NEXT_PUBLIC_API_URL}/api/get-data`;
 
 interface csvDataType {
   metaData: {
@@ -10,8 +10,6 @@ interface csvDataType {
   };
   pageContent: string;
 }
-
-const GETDATAURL = `${process.env.NEXT_PUBLIC_API_URL}/api/get-data`;
 
 async function getData() {
   const res = await fetch(GETDATAURL);
@@ -27,11 +25,6 @@ const CHAT_MESSAGE_LIST = [
     message: "안녕하세요.\nAI 챗봇 알다입니다. \n약 이름을 입력 해주세요.  ",
     isMine: false,
   },
-  {
-    id: 2,
-    message: "타이레놀",
-    isMine: true,
-  },
 ];
 
 export default async function Page() {
@@ -45,6 +38,7 @@ export default async function Page() {
     <div>
       <Header />
       <ChatMessageList chatMessageListProps={CHAT_MESSAGE_LIST} />
+
       <ChatInput nameList={nameList} contentList={contentList} />
     </div>
   );
