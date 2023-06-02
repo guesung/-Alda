@@ -21,7 +21,6 @@ export default function Page() {
       .map((it: any) => new Document({ pageContent: it.pageContent }))
       .slice(0, 10);
 
-    console.log(docs);
     const res = await chain.call(
       {
         input_documents: docs,
@@ -34,7 +33,7 @@ export default function Page() {
         },
       ]
     );
-    console.log({ res });
+    ({ res });
   };
 
   return (
@@ -52,7 +51,7 @@ export default function Page() {
           width={500}
           type="text"
         />
-        <button >Click to run a chain</button>
+        <button>Click to run a chain</button>
       </form>
       <div>{botMessage}</div>
     </div>

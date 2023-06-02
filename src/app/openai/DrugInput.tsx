@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import clsx from "clsx";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 interface propsType {
@@ -41,7 +41,6 @@ function Header({ nameList, drugInput, setDrugInput }: propsType) {
         break;
     }
   };
-  console.log(keywordIndex);
   return (
     <div>
       <input
