@@ -11,10 +11,7 @@ interface PropsType {
   contentList: string[];
 }
 
-export default React.memo(function ChatInput({
-  nameList,
-  contentList,
-}: PropsType) {
+export default function ChatInput({ nameList, contentList }: PropsType) {
   const [input, setInput] = useState<string>("");
   const [chatMessageList, setChatMessageList] =
     useRecoilState(chatMessageListState);
@@ -71,4 +68,4 @@ export default React.memo(function ChatInput({
       </button>
     </form>
   );
-});
+}
