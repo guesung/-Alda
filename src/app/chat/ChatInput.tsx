@@ -43,23 +43,26 @@ export default function ChatInput({ nameList, contentList }: PropsType) {
       ...chatMessageList,
       { id: chatMessageList.length + 1, message: input, isMine: true },
     ]);
+    const inputSave = input;
+    setInput("");
     await runOpenAI(
       nameList,
       contentList,
-      input,
+      inputSave,
       [
         ...chatMessageList,
-        { id: chatMessageList.length + 1, message: input, isMine: true },
+        { id: chatMessageList.length + 1, message: inputSave, isMine: true },
       ],
       setChatMessageList
     );
     setIsTyping(false);
-    setInput("");
   };
 
   const handleAutoCompleteClick = async (word: string) => {
     if (isTyping) return;
     setIsTyping(true);
+    setAutoCompleteWordList([]);
+    setInput("");
     await runOpenAI(
       nameList,
       contentList,
@@ -70,8 +73,6 @@ export default function ChatInput({ nameList, contentList }: PropsType) {
       ],
       setChatMessageList
     );
-    setAutoCompleteWordList([]);
-    setInput("");
     setIsTyping(false);
   };
 
