@@ -1,4 +1,4 @@
-import { makeTTS } from "@utils/makeTTS";
+import { TTS, makeTTS } from "@utils/makeTTS";
 import clsx from "clsx";
 import Image from "next/image";
 
@@ -8,16 +8,14 @@ interface PropsType {
 }
 
 export default function ChatMessage({ message, isMine }: PropsType) {
+  const tts = new TTS(message);
   const handleSpeaker = () => {
-    makeTTS(message);
+    if (tts.isPlaying) tts.stop();
+    else tts.play();
   };
   return (
     <div
-      className={clsx(
-        "flex",
-        isMine ? "flex-row-reverse" : "flex-row",
-        "mb-5"
-      )}
+      className={clsx("flex", isMine ? "flex-row-reverse" : "flex-row", "mb-5")}
     >
       <p
         className={clsx(
