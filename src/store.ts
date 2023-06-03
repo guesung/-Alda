@@ -13,7 +13,7 @@ const chatMessageListState = atom({
 
 const userInfoState = atom({
   key: "userInfoState",
-  default: { name: "", drug: "", selectQuestion: [""] },
+  default: { name: "", info: [""], selectQuestion: [""] },
 });
 
 const isTypingState = atom({

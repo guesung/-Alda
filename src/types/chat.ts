@@ -6,6 +6,6 @@ export interface chatMessageType {
 
 export interface userInfoType {
   name: string;
-  drug: string;
+  info: string[];
   selectQuestion: string[];
 }

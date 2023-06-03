@@ -16,17 +16,25 @@ export const runOpenAI = async (
       content: `Given the following extracted parts of a long document and a question, create a final answer.
   If you don't know the answer, just say that you don't know. Don't try to make up an answer.`,
     },
-    {
-      role: "user",
-      content: inputValue + "에 대해 말해줘",
-    },
   ];
-  if (userInfo.name !== "" && userInfo.drug !== "") {
+  if (userInfo.name !== "") {
     messageData.push({
       role: "system",
-      content: `사용자 정보를 말해줄게. 사용자는 ${userInfo.name}이고, ${userInfo.drug}을(를) 복용하고 있어.}`,
+      content: `사용자의 이름은 ${userInfo.name}이야`,
     });
   }
+  if (userInfo.info.length > 0) {
+    userInfo.info.forEach((info: string) => {
+      messageData.push({
+        role: "system",
+        content: info,
+      });
+    });
+  }
+  messageData.push({
+    role: "user",
+    content: inputValue + "에 대해 말해줘",
+  });
 
   // 필요한 데이터 넣기
   const findDrugIndex = nameList.findIndex((name: string) =>
