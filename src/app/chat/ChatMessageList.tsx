@@ -1,12 +1,14 @@
 "use client";
 
 import ChatMessage from "@components/chatMessage";
+
+import Image from "next/image";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { chatMessageListState, userInfoState } from "store";
 import { chatMessageType, userInfoType } from "types/chat";
 import SelectMessage from "./SelectMessage";
-import Image from "next/image";
+
 interface PropsType {
   chatMessageListProps: chatMessageType[];
   userInfoProps: userInfoType;
@@ -23,7 +25,7 @@ export default function ChatMessageList({
   const [chatMessageList, setChatMessageList] =
     useRecoilState(chatMessageListState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
-
+  console.log(userInfoProps);
   useEffect(() => {
     setChatMessageList(chatMessageListProps);
     setUserInfo(userInfoProps);

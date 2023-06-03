@@ -1,7 +1,11 @@
 import ChatMessageList from "./ChatMessageList";
 import Header from "./Header";
 import ChatInput from "./ChatInput";
-const GETDATAURL = `${process.env.NEXT_PUBLIC_API_URL}/api/get-data`;
+import { database } from "@utils/firebase";
+import { onValue, ref } from "firebase/database";
+
+const DRUG_DATA_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/get-data`;
+const USER_INFO_URL = `${process.env.NEXT_PUBLIC_FIREBASE_URL}`;
 
 interface csvDataType {
   metaData: {
@@ -11,12 +15,23 @@ interface csvDataType {
   pageContent: string;
 }
 
-async function getData() {
-  const res = await fetch(GETDATAURL);
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
+async function getDrugData() {
+  try {
+    const res = await fetch(DRUG_DATA_URL);
+    return res.json();
+  } catch (error) {
+    return error;
   }
-  return res.json();
+}
+async function getUserData() {
+  const db = database;
+  const starCountRef = ref(db);
+  let data;
+  await onValue(starCountRef, (snapshot) => {
+    data = snapshot.val();
+    console.log(data);
+  });
+  return data;
 }
 
 const CHAT_MESSAGE_LIST = [
@@ -28,36 +43,30 @@ const CHAT_MESSAGE_LIST = [
   },
 ];
 
-const USER_INFO = {
-  // 추후 firebase 데이터(SSG로 받아오기)로 교체 예정
-  name: "알다",
-  info: [],
-  selectQuestion: [
-    "효능",
-    "복용 방법과 시간",
-    "피해야 할 음식, 약물",
-    "주의사항",
-  ],
-};
-
 export default async function Page() {
-  const data = await getData();
-  const contentList: string[] = data.map((it: csvDataType) => it.pageContent);
-  const nameList: string[] = data.map(
+  const drugData = await getDrugData();
+  const userData = await getUserData();
+  const contentList: string[] = drugData.map(
+    (it: csvDataType) => it.pageContent
+  );
+  const nameList: string[] = drugData.map(
     (it: csvDataType) => it.pageContent.split("\n")[3].split(":")[1]
   );
 
-  return (
-    <div className="overflow-scroll">
-      <Header />
-      <ChatMessageList
-        chatMessageListProps={CHAT_MESSAGE_LIST}
-        userInfoProps={USER_INFO}
-        nameList={nameList}
-        contentList={contentList}
-      />
-      <ChatInput nameList={nameList} contentList={contentList} />
-      <div className="h-20" />
-    </div>
-  );
+  if (userData === undefined) return <div></div>;
+  else {
+    return (
+      <div className="overflow-scroll">
+        <Header />
+        <ChatMessageList
+          chatMessageListProps={CHAT_MESSAGE_LIST}
+          userInfoProps={userData}
+          nameList={nameList}
+          contentList={contentList}
+        />
+        <ChatInput nameList={nameList} contentList={contentList} />
+        <div className="h-20" />
+      </div>
+    );
+  }
 }
