@@ -13,7 +13,11 @@ export default function ChatMessage({ message, isMine }: PropsType) {
   };
   return (
     <div
-      className={clsx("flex", isMine ? "flex-row-reverse" : "flex-row", "mb-5")}
+      className={clsx(
+        "flex",
+        isMine ? "flex-row-reverse" : "flex-row",
+        "mb-5"
+      )}
     >
       <p
         className={clsx(

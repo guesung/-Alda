@@ -6,7 +6,7 @@ import { useRecoilState } from "recoil";
 import { chatMessageListState, userInfoState } from "store";
 import { chatMessageType, userInfoType } from "types/chat";
 import SelectMessage from "./SelectMessage";
-
+import Image from "next/image";
 interface PropsType {
   chatMessageListProps: chatMessageType[];
   userInfoProps: userInfoType;
@@ -32,6 +32,24 @@ export default function ChatMessageList({
   return (
     <article>
       {chatMessageList.map((chatMessage: chatMessageType, index: number) => {
+        if (index === 0)
+          return (
+            <div key={chatMessage.id} className="relative">
+              <Image
+                alt="alda"
+                src="/icons/alda.svg"
+                width={100}
+                height={100}
+                className="absolute left-10 bottom-10 -z-1"
+              />
+              <div className="mt-20 relative">
+                <ChatMessage
+                  message={chatMessage.message}
+                  isMine={chatMessage.isMine}
+                />
+              </div>
+            </div>
+          );
         if (
           chatMessage.isMine === false &&
           index === chatMessageList.length - 1 &&
