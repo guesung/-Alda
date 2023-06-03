@@ -29,10 +29,21 @@ async function getUserData() {
   let data;
   await onValue(starCountRef, (snapshot) => {
     data = snapshot.val();
-    console.log(data);
   });
   return data;
 }
+
+const USER_INFO = {
+  // 추후 firebase 데이터(SSG로 받아오기)로 교체 예정
+  name: "알다",
+  drug: "",
+  selectQuestion: [
+    "효능",
+    "복용 방법과 시간",
+    "피해야 할 음식, 약물",
+    "주의사항",
+  ],
+};
 
 const CHAT_MESSAGE_LIST = [
   // 추후 firebase 데이터(SSG로 받아오기)로 교체 예정
@@ -60,7 +71,7 @@ export default async function Page() {
         <Header />
         <ChatMessageList
           chatMessageListProps={CHAT_MESSAGE_LIST}
-          userInfoProps={userData}
+          userInfoProps={USER_INFO}
           nameList={nameList}
           contentList={contentList}
         />

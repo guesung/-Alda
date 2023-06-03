@@ -25,7 +25,6 @@ export default function ChatMessageList({
   const [chatMessageList, setChatMessageList] =
     useRecoilState(chatMessageListState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
-  console.log(userInfoProps);
   useEffect(() => {
     setChatMessageList(chatMessageListProps);
     setUserInfo(userInfoProps);
