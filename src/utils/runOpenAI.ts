@@ -23,12 +23,10 @@ export const runOpenAI = async (
       content: `사용자의 이름은 ${userInfo.name}이야`,
     });
   }
-  if (userInfo.info.length > 0) {
-    userInfo.info.forEach((info: string) => {
-      messageData.push({
-        role: "system",
-        content: info,
-      });
+  if (userInfo.drug !== "") {
+    messageData.push({
+      role: "system",
+      content: `사용자가 선택한 약은 ${userInfo.drug}이야`,
     });
   }
   messageData.push({

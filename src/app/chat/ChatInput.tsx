@@ -38,7 +38,7 @@ export default function ChatInput({ nameList, contentList }: PropsType) {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (userInfo.info.length === 0) {
+    if (userInfo.drug === "") {
       alert("약을 선택해주세요");
       return;
     }
@@ -50,10 +50,10 @@ export default function ChatInput({ nameList, contentList }: PropsType) {
       ...chatMessageList,
       { id: chatMessageList.length + 1, message: input, isMine: true },
     ]);
-    if (userInfo.info.length === 0) {
+    if (userInfo.drug === "") {
       setUserInfo({
         ...userInfo,
-        info: [...userInfo.info, `사용자는 ${input}약물을 복용하고 있어.`],
+        drug: input,
       });
     }
 
@@ -78,13 +78,12 @@ export default function ChatInput({ nameList, contentList }: PropsType) {
     setIsTyping(true);
     setAutoCompleteWordList([]);
     setInput("");
-    if (userInfo.info.length === 0) {
+    if (userInfo.drug === "") {
       setUserInfo({
         ...userInfo,
-        info: [...userInfo.info, `사용자는 ${word}약물을 복용하고 있어.`],
+        drug: input,
       });
     }
-
     await runOpenAI(
       nameList,
       contentList,

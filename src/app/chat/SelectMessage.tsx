@@ -40,17 +40,18 @@ export default function SelectMessage({ nameList, contentList }: PropsType) {
   if (!isTyping)
     return (
       <div className="flex overflow-scroll gap-3">
-        {userInfo.selectQuestion.map((question, index) => (
-          <div
-            key={index}
-            className="px-[1.125rem] py-[0.75rem] rounded-[0.625rem] border border-[#F0F0F0] whitespace-nowrap"
-            onClick={() => {
-              handleSelectClick(question);
-            }}
-          >
-            {question}
-          </div>
-        ))}
+        {userInfo.selectQuestion &&
+          userInfo.selectQuestion.map((question, index) => (
+            <div
+              key={index}
+              className="px-[1.125rem] py-[0.75rem] rounded-[0.625rem] border border-[#F0F0F0] whitespace-nowrap"
+              onClick={() => {
+                handleSelectClick(question);
+              }}
+            >
+              {question}
+            </div>
+          ))}
       </div>
     );
   else return <></>;
