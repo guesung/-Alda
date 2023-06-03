@@ -20,12 +20,25 @@ async function getData() {
 }
 
 const CHAT_MESSAGE_LIST = [
+  // 추후 firebase 데이터(SSG로 받아오기)로 교체 예정
   {
     id: 1,
     message: "안녕하세요.\nAI 챗봇 알다입니다. \n약 이름을 입력 해주세요.  ",
     isMine: false,
   },
 ];
+
+const USER_INFO = {
+  // 추후 firebase 데이터(SSG로 받아오기)로 교체 예정
+  name: "알다",
+  drug: "",
+  selectQuestion: [
+    "효능",
+    "복용 방법과 시간",
+    "피해야 할 음식, 약물",
+    "주의사항",
+  ],
+};
 
 export default async function Page() {
   const data = await getData();
@@ -35,10 +48,16 @@ export default async function Page() {
   );
 
   return (
-    <div>
+    <div className="overflow-scroll">
       <Header />
-      <ChatMessageList chatMessageListProps={CHAT_MESSAGE_LIST} />
+      <ChatMessageList
+        chatMessageListProps={CHAT_MESSAGE_LIST}
+        userInfoProps={USER_INFO}
+        nameList={nameList}
+        contentList={contentList}
+      />
       <ChatInput nameList={nameList} contentList={contentList} />
+      <div className="h-20" />
     </div>
   );
 }
