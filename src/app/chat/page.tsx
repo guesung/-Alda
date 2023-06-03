@@ -64,20 +64,17 @@ export default async function Page() {
     (it: csvDataType) => it.pageContent.split("\n")[3].split(":")[1]
   );
 
-  if (userData === undefined) return <div></div>;
-  else {
-    return (
-      <div className="overflow-scroll">
-        <Header />
-        <ChatMessageList
-          chatMessageListProps={CHAT_MESSAGE_LIST}
-          userInfoProps={USER_INFO}
-          nameList={nameList}
-          contentList={contentList}
-        />
-        <ChatInput nameList={nameList} contentList={contentList} />
-        <div className="h-20" />
-      </div>
-    );
-  }
+  return (
+    <div className="overflow-scroll">
+      <Header />
+      <ChatMessageList
+        chatMessageListProps={CHAT_MESSAGE_LIST}
+        userInfoProps={USER_INFO}
+        nameList={nameList}
+        contentList={contentList}
+      />
+      <ChatInput nameList={nameList} contentList={contentList} />
+      <div className="h-20" />
+    </div>
+  );
 }
