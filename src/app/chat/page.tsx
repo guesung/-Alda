@@ -1,6 +1,9 @@
 import ChatMessageList from "./ChatMessageList";
 import Header from "./Header";
 import ChatInput from "./ChatInput";
+import { database } from "@utils/firebase";
+import { onValue, ref } from "firebase/database";
+
 const DRUG_DATA_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/get-data`;
 const USER_INFO_URL = `${process.env.NEXT_PUBLIC_FIREBASE_URL}`;
 
@@ -21,12 +24,14 @@ async function getDrugData() {
   }
 }
 async function getUserData() {
-  try {
-    const res = await fetch(USER_INFO_URL);
-    return res;
-  } catch (error) {
-    return error;
-  }
+  const db = database;
+  const starCountRef = ref(db);
+  let data;
+  await onValue(starCountRef, (snapshot) => {
+    data = snapshot.val();
+    console.log(data);
+  });
+  return data;
 }
 
 const CHAT_MESSAGE_LIST = [
@@ -69,6 +74,7 @@ export default async function Page() {
         userInfoProps={USER_INFO}
         nameList={nameList}
         contentList={contentList}
+        userData={userData}
       />
       <ChatInput nameList={nameList} contentList={contentList} />
       <div className="h-20" />

@@ -1,8 +1,7 @@
 "use client";
 
 import ChatMessage from "@components/chatMessage";
-import { database } from "@utils/firebase";
-import { onValue, ref } from "firebase/database";
+
 import Image from "next/image";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
@@ -22,21 +21,12 @@ export default function ChatMessageList({
   userInfoProps,
   nameList,
   contentList,
+  userData,
 }: PropsType) {
   const [chatMessageList, setChatMessageList] =
     useRecoilState(chatMessageListState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
-  const firebaseConfig = {
-    databaseURL: "process.env.NEXT_PUBLIC_FIREBASE_URL",
-  };
-
-  const db = database;
-  const starCountRef = ref(db);
-  onValue(starCountRef, (snapshot) => {
-    const data = snapshot.val();
-    console.log(data);
-  });
-
+  console.log(userData);
   useEffect(() => {
     setChatMessageList(chatMessageListProps);
     setUserInfo(userInfoProps);
