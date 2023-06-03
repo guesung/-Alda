@@ -2,9 +2,9 @@
 
 import { runOpenAI } from "@utils/runOpenAI";
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { chatMessageListState } from "store";
+import { chatMessageListState, isTypingState, userInfoState } from "store";
 
 interface PropsType {
   nameList: string[];
@@ -13,48 +13,73 @@ interface PropsType {
 
 export default function ChatInput({ nameList, contentList }: PropsType) {
   const [input, setInput] = useState<string>("");
+
+  const [isTyping, setIsTyping] = useRecoilState(isTypingState);
+
   const [chatMessageList, setChatMessageList] =
     useRecoilState(chatMessageListState);
+  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
 
   const [autoCompleteWordList, setAutoCompleteWordList] = useState<string[]>(
     []
   );
 
-  const updateData = useCallback(() => {
-    const b = nameList.filter((name) => name.includes(input));
-    setAutoCompleteWordList(b);
-  }, [input, nameList]);
-
   useEffect(() => {
     const debounce = setTimeout(() => {
-      if (input) updateData();
+      if (input)
+        setAutoCompleteWordList(
+          nameList.filter((name) => name.includes(input))
+        );
     }, 200);
     return () => {
       clearTimeout(debounce);
     };
-  }, [input, updateData]);
+  }, [input, nameList]);
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
+    if (isTyping) return;
+    setIsTyping(true);
+    setAutoCompleteWordList([]);
+
     setChatMessageList((chatMessageList) => [
       ...chatMessageList,
       { id: chatMessageList.length + 1, message: input, isMine: true },
     ]);
-    runOpenAI(
+    if (userInfo.drug === "") {
+      setUserInfo({ ...userInfo, drug: input });
+    } else {
+      console.log("drug is not empty");
+    }
+
+    const inputSave = input;
+    setInput("");
+    await runOpenAI(
       nameList,
       contentList,
-      input,
+      inputSave,
       [
         ...chatMessageList,
-        { id: chatMessageList.length + 1, message: input, isMine: true },
+        { id: chatMessageList.length + 1, message: inputSave, isMine: true },
       ],
-      setChatMessageList
+      setChatMessageList,
+      userInfo
     );
-    setInput("");
+    setIsTyping(false);
   };
 
-  const handleAutoCompleteClick = (word: string) => {
-    runOpenAI(
+  const handleAutoCompleteClick = async (word: string) => {
+    if (isTyping) return;
+    setIsTyping(true);
+    setAutoCompleteWordList([]);
+    setInput("");
+    if (userInfo.drug === "") {
+      setUserInfo({ ...userInfo, drug: word });
+    } else {
+      console.log("drug is not empty");
+    }
+
+    await runOpenAI(
       nameList,
       contentList,
       word,
@@ -62,10 +87,10 @@ export default function ChatInput({ nameList, contentList }: PropsType) {
         ...chatMessageList,
         { id: chatMessageList.length + 1, message: word, isMine: true },
       ],
-      setChatMessageList
+      setChatMessageList,
+      userInfo
     );
-    setAutoCompleteWordList([]);
-    setInput("");
+    setIsTyping(false);
   };
 
   const heightValue = `${Math.min(autoCompleteWordList.length, 4) * 3.125}rem`;
@@ -82,7 +107,7 @@ export default function ChatInput({ nameList, contentList }: PropsType) {
               handleAutoCompleteClick(word);
             }}
             key={index}
-            className="h-[3.125rem] flex items-center border-t border-[#EEE] px-5 "
+            className="h-[3.125rem] flex items-center border-t border-[#EEE] px-5 text-[#707478]"
           >
             {word}
           </p>
@@ -92,11 +117,12 @@ export default function ChatInput({ nameList, contentList }: PropsType) {
         <div className="bg-gradient-to-r rounded-[1.875rem] h-[2.6rem] w-[17rem] flex justify-center items-center from-[#14C8C8] via-[#D5E7F3] to-[#C1CFFF] relative">
           <input
             type="text"
-            className="h-[2.5rem] w-[16.9375rem] border rounded-[1.875rem] px-[1.25rem] text-[#ACACAC]"
+            className="h-[2.5rem] w-[16.9375rem] border rounded-[1.875rem] px-[1.25rem] text-[#34363C] placeholder-[#ACACAC]"
             onChange={(e) => {
               setInput(e.target.value);
             }}
             placeholder="타이레놀"
+            value={input}
           />
           <Image
             src="/icons/mike.svg"
