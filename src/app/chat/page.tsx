@@ -23,18 +23,8 @@ async function getDrugData() {
     return error;
   }
 }
-async function getUserData() {
-  const db = database;
-  const starCountRef = ref(db);
-  let data;
-  await onValue(starCountRef, (snapshot) => {
-    data = snapshot.val();
-  });
-  return data;
-}
 
 const USER_INFO = {
-  // 추후 firebase 데이터(SSG로 받아오기)로 교체 예정
   name: "알다",
   drug: "",
   selectQuestion: [
@@ -46,7 +36,6 @@ const USER_INFO = {
 };
 
 const CHAT_MESSAGE_LIST = [
-  // 추후 firebase 데이터(SSG로 받아오기)로 교체 예정
   {
     id: 1,
     message: "안녕하세요.\nAI 챗봇 알다입니다. \n약 이름을 입력 해주세요.  ",
@@ -56,7 +45,6 @@ const CHAT_MESSAGE_LIST = [
 
 export default async function Page() {
   const drugData = await getDrugData();
-  const userData = await getUserData();
   const contentList: string[] = drugData.map(
     (it: csvDataType) => it.pageContent
   );
