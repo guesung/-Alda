@@ -38,6 +38,10 @@ export default function ChatInput({ nameList, contentList }: PropsType) {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    if (userInfo.info.length === 0) {
+      alert("약을 선택해주세요");
+      return;
+    }
     if (isTyping) return;
     setIsTyping(true);
     setAutoCompleteWordList([]);
@@ -46,10 +50,11 @@ export default function ChatInput({ nameList, contentList }: PropsType) {
       ...chatMessageList,
       { id: chatMessageList.length + 1, message: input, isMine: true },
     ]);
-    if (userInfo.drug === "") {
-      setUserInfo({ ...userInfo, drug: input });
-    } else {
-      console.log("drug is not empty");
+    if (userInfo.info.length === 0) {
+      setUserInfo({
+        ...userInfo,
+        info: [...userInfo.info, `사용자는 ${input}약물을 복용하고 있어.`],
+      });
     }
 
     const inputSave = input;
@@ -73,10 +78,11 @@ export default function ChatInput({ nameList, contentList }: PropsType) {
     setIsTyping(true);
     setAutoCompleteWordList([]);
     setInput("");
-    if (userInfo.drug === "") {
-      setUserInfo({ ...userInfo, drug: word });
-    } else {
-      console.log("drug is not empty");
+    if (userInfo.info.length === 0) {
+      setUserInfo({
+        ...userInfo,
+        info: [...userInfo.info, `사용자는 ${word}약물을 복용하고 있어.`],
+      });
     }
 
     await runOpenAI(

@@ -31,7 +31,7 @@ const CHAT_MESSAGE_LIST = [
 const USER_INFO = {
   // 추후 firebase 데이터(SSG로 받아오기)로 교체 예정
   name: "알다",
-  drug: "",
+  info: [],
   selectQuestion: [
     "효능",
     "복용 방법과 시간",
