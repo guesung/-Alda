@@ -15,7 +15,6 @@ export default function ChatInput({ nameList, contentList }: PropsType) {
   const [input, setInput] = useState<string>("");
 
   const [isTyping, setIsTyping] = useRecoilState(isTypingState);
-
   const [chatMessageList, setChatMessageList] =
     useRecoilState(chatMessageListState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
@@ -42,7 +41,14 @@ export default function ChatInput({ nameList, contentList }: PropsType) {
       alert("약을 선택해주세요");
       return;
     }
-    if (isTyping) return;
+    if (isTyping) {
+      alert("대답을 기다려주세요");
+      return;
+    }
+    if (input === "") {
+      alert("메시지를 입력해주세요.");
+      return;
+    }
     setIsTyping(true);
     setAutoCompleteWordList([]);
 
