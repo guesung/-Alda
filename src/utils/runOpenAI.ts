@@ -46,8 +46,8 @@ export const runOpenAI = async (
       stream: true,
       top_p: 1,
       presence_penalty: 0,
-      n: 1,
       frequency_penalty: 0,
+      n: 1,
     }),
 
     headers: {
@@ -55,6 +55,7 @@ export const runOpenAI = async (
       Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
     },
   });
+
   if (!response.body) return;
   const reader = response.body.getReader();
   const decoder = new TextDecoder("utf-8");
@@ -76,10 +77,13 @@ export const runOpenAI = async (
       const { content } = delta;
       if (content) {
         if (isFirst) {
-          console.log(1);
           setChatMessageListState((prev: chatMessageType[]) => [
             ...chatMessageListState,
-            { id: chatMessageListState.length + 1, message: "", isMine: false },
+            {
+              id: chatMessageListState.length + 1,
+              message: content,
+              isMine: false,
+            },
           ]);
           isFirst = false;
         } else {
