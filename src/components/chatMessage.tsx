@@ -12,7 +12,6 @@ export default function ChatMessage({ message, isMine }: PropsType) {
   const handleSpeaker = () => {
     if (tts.isPlaying) tts.stop();
     else tts.play();
-    // makeTTS(message);
   };
   return (
     <div
