@@ -34,8 +34,8 @@ export default function ChatMessageList({
       {chatMessageList.map((chatMessage: chatMessageType, index: number) => {
         if (
           chatMessage.isMine === false &&
-          index === chatMessageList.length - 1
-          // && index > 0
+          index === chatMessageList.length - 1 &&
+          index > 0
         )
           return (
             <div key={chatMessage.id}>
