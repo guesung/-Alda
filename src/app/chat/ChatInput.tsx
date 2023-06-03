@@ -2,9 +2,9 @@
 
 import { runOpenAI } from "@utils/runOpenAI";
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { chatMessageListState } from "store";
+import { chatMessageListState, isTypingState, userInfoState } from "store";
 
 interface PropsType {
   nameList: string[];
@@ -13,36 +13,45 @@ interface PropsType {
 
 export default function ChatInput({ nameList, contentList }: PropsType) {
   const [input, setInput] = useState<string>("");
-  const [isTyping, setIsTyping] = useState<boolean>(false);
+
+  const [isTyping, setIsTyping] = useRecoilState(isTypingState);
+
   const [chatMessageList, setChatMessageList] =
     useRecoilState(chatMessageListState);
+  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
 
   const [autoCompleteWordList, setAutoCompleteWordList] = useState<string[]>(
     []
   );
 
-  const updateData = useCallback(() => {
-    const b = nameList.filter((name) => name.includes(input));
-    setAutoCompleteWordList(b);
-  }, [input, nameList]);
-
   useEffect(() => {
     const debounce = setTimeout(() => {
-      if (input) updateData();
+      if (input)
+        setAutoCompleteWordList(
+          nameList.filter((name) => name.includes(input))
+        );
     }, 200);
     return () => {
       clearTimeout(debounce);
     };
-  }, [input, updateData]);
+  }, [input, nameList]);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (isTyping) return;
     setIsTyping(true);
+    setAutoCompleteWordList([]);
+
     setChatMessageList((chatMessageList) => [
       ...chatMessageList,
       { id: chatMessageList.length + 1, message: input, isMine: true },
     ]);
+    if (userInfo.drug === "") {
+      setUserInfo({ ...userInfo, drug: input });
+    } else {
+      console.log("drug is not empty");
+    }
+
     const inputSave = input;
     setInput("");
     await runOpenAI(
@@ -53,7 +62,8 @@ export default function ChatInput({ nameList, contentList }: PropsType) {
         ...chatMessageList,
         { id: chatMessageList.length + 1, message: inputSave, isMine: true },
       ],
-      setChatMessageList
+      setChatMessageList,
+      userInfo
     );
     setIsTyping(false);
   };
@@ -63,6 +73,12 @@ export default function ChatInput({ nameList, contentList }: PropsType) {
     setIsTyping(true);
     setAutoCompleteWordList([]);
     setInput("");
+    if (userInfo.drug === "") {
+      setUserInfo({ ...userInfo, drug: word });
+    } else {
+      console.log("drug is not empty");
+    }
+
     await runOpenAI(
       nameList,
       contentList,
@@ -71,7 +87,8 @@ export default function ChatInput({ nameList, contentList }: PropsType) {
         ...chatMessageList,
         { id: chatMessageList.length + 1, message: word, isMine: true },
       ],
-      setChatMessageList
+      setChatMessageList,
+      userInfo
     );
     setIsTyping(false);
   };
