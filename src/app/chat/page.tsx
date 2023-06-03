@@ -1,7 +1,8 @@
 import ChatMessageList from "./ChatMessageList";
 import Header from "./Header";
 import ChatInput from "./ChatInput";
-const GETDATAURL = `${process.env.NEXT_PUBLIC_API_URL}/api/get-data`;
+const DRUG_DATA_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/get-data`;
+const USER_INFO_URL = `${process.env.NEXT_PUBLIC_FIREBASE_URL}`;
 
 interface csvDataType {
   metaData: {
@@ -11,12 +12,21 @@ interface csvDataType {
   pageContent: string;
 }
 
-async function getData() {
-  const res = await fetch(GETDATAURL);
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
+async function getDrugData() {
+  try {
+    const res = await fetch(DRUG_DATA_URL);
+    return res.json();
+  } catch (error) {
+    return error;
   }
-  return res.json();
+}
+async function getUserData() {
+  try {
+    const res = await fetch(USER_INFO_URL);
+    return res;
+  } catch (error) {
+    return error;
+  }
 }
 
 const CHAT_MESSAGE_LIST = [
@@ -41,9 +51,13 @@ const USER_INFO = {
 };
 
 export default async function Page() {
-  const data = await getData();
-  const contentList: string[] = data.map((it: csvDataType) => it.pageContent);
-  const nameList: string[] = data.map(
+  const drugData = await getDrugData();
+  const userData = await getUserData();
+  // console.log();
+  const contentList: string[] = drugData.map(
+    (it: csvDataType) => it.pageContent
+  );
+  const nameList: string[] = drugData.map(
     (it: csvDataType) => it.pageContent.split("\n")[3].split(":")[1]
   );
 
