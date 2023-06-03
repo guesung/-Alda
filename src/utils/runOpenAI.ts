@@ -33,7 +33,7 @@ export const runOpenAI = async (
   }
   messageData.push({
     role: "user",
-    content: inputValue + "에 대해 말해줘",
+    content: `${inputValue} 에 대해 말해줘`,
   });
 
   // 필요한 데이터 넣기
