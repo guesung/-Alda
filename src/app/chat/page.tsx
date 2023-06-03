@@ -43,22 +43,9 @@ const CHAT_MESSAGE_LIST = [
   },
 ];
 
-const USER_INFO = {
-  // 추후 firebase 데이터(SSG로 받아오기)로 교체 예정
-  name: "알다",
-  info: [],
-  selectQuestion: [
-    "효능",
-    "복용 방법과 시간",
-    "피해야 할 음식, 약물",
-    "주의사항",
-  ],
-};
-
 export default async function Page() {
   const drugData = await getDrugData();
   const userData = await getUserData();
-  // console.log();
   const contentList: string[] = drugData.map(
     (it: csvDataType) => it.pageContent
   );
@@ -66,18 +53,20 @@ export default async function Page() {
     (it: csvDataType) => it.pageContent.split("\n")[3].split(":")[1]
   );
 
-  return (
-    <div className="overflow-scroll">
-      <Header />
-      <ChatMessageList
-        chatMessageListProps={CHAT_MESSAGE_LIST}
-        userInfoProps={USER_INFO}
-        nameList={nameList}
-        contentList={contentList}
-        userData={userData}
-      />
-      <ChatInput nameList={nameList} contentList={contentList} />
-      <div className="h-20" />
-    </div>
-  );
+  if (userData === undefined) return <div></div>;
+  else {
+    return (
+      <div className="overflow-scroll">
+        <Header />
+        <ChatMessageList
+          chatMessageListProps={CHAT_MESSAGE_LIST}
+          userInfoProps={userData}
+          nameList={nameList}
+          contentList={contentList}
+        />
+        <ChatInput nameList={nameList} contentList={contentList} />
+        <div className="h-20" />
+      </div>
+    );
+  }
 }
