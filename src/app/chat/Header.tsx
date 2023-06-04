@@ -8,9 +8,9 @@ export default function Header() {
       <p className="text-[1.25rem]">알다와 대화중</p>
       <Image
         alt="home"
-        src="/icons/home.svg"
-        width={40}
-        height={40}
+        src="/icons/close.svg"
+        width={15}
+        height={15}
         className="absolute right-0"
       />
     </header>
