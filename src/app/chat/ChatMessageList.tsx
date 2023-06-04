@@ -12,8 +12,7 @@ import SelectMessage from "./SelectMessage";
 interface PropsType {
   chatMessageListProps: chatMessageType[];
   userInfoProps: userInfoType;
-  nameList: string[];
-  contentList: string[];
+  drugDatabase: any[];
 }
 
 const EncodingKey = "";
@@ -21,8 +20,7 @@ const EncodingKey = "";
 export default function ChatMessageList({
   chatMessageListProps,
   userInfoProps,
-  nameList,
-  contentList,
+  drugDatabase,
 }: PropsType) {
   const [chatMessageList, setChatMessageList] =
     useRecoilState(chatMessageListState);
@@ -65,7 +63,7 @@ export default function ChatMessageList({
                 isMine={chatMessage.isMine}
                 key={chatMessage.id}
               />
-              <SelectMessage nameList={nameList} contentList={contentList} />
+              <SelectMessage drugDatabase={drugDatabase} />
             </div>
           );
         return (

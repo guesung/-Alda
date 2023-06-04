@@ -7,11 +7,10 @@ import { useRecoilState } from "recoil";
 import { chatMessageListState, isTypingState, userInfoState } from "store";
 
 interface PropsType {
-  nameList: string[];
-  contentList: string[];
+  drugDatabase: any[];
 }
 
-export default function ChatInput({ nameList, contentList }: PropsType) {
+export default function ChatInput({ drugDatabase }: PropsType) {
   const [input, setInput] = useState<string>("");
 
   const [isTyping, setIsTyping] = useRecoilState(isTypingState);
@@ -23,17 +22,17 @@ export default function ChatInput({ nameList, contentList }: PropsType) {
     []
   );
 
-  useEffect(() => {
-    const debounce = setTimeout(() => {
-      if (input)
-        setAutoCompleteWordList(
-          nameList.filter((name) => name.includes(input))
-        );
-    }, 200);
-    return () => {
-      clearTimeout(debounce);
-    };
-  }, [input, nameList]);
+  // useEffect(() => {
+  //   const debounce = setTimeout(() => {
+  //     if (input)
+  //       setAutoCompleteWordList(
+  //         nameList.filter((name) => name.includes(input))
+  //       );
+  //   }, 200);
+  //   return () => {
+  //     clearTimeout(debounce);
+  //   };
+  // }, [input, nameList]);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -66,8 +65,7 @@ export default function ChatInput({ nameList, contentList }: PropsType) {
     const inputSave = input;
     setInput("");
     await runOpenAI(
-      nameList,
-      contentList,
+      drugDatabase,
       inputSave,
       [
         ...chatMessageList,
@@ -91,8 +89,7 @@ export default function ChatInput({ nameList, contentList }: PropsType) {
       });
     }
     await runOpenAI(
-      nameList,
-      contentList,
+      drugDatabase,
       word,
       [
         ...chatMessageList,

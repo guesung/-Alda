@@ -3,8 +3,7 @@ import { chatMessageType, userInfoType } from "types/chat";
 const APIURL = "https://api.openai.com/v1/chat/completions";
 
 export const runOpenAI = async (
-  nameList: string[],
-  contentList: string[],
+  drugDatabase: any[],
   inputValue: string,
   chatMessageListState: chatMessageType[],
   setChatMessageListState: (answer: any) => void,
@@ -35,12 +34,12 @@ export const runOpenAI = async (
   });
 
   // 필요한 데이터 넣기
-  const findDrugIndex = nameList.findIndex((name: string) =>
-    name.includes(inputValue)
-  );
-  const findDrug = contentList[findDrugIndex];
+  // const findDrugIndex = nameList.findIndex((name: string) =>
+  //   name.includes(inputValue)
+  // );
+  // const findDrug = contentList[findDrugIndex];
 
-  if (findDrug) messageData.push({ role: "system", content: findDrug });
+  // if (findDrug) messageData.push({ role: "system", content: findDrug });
 
   const response = await fetch(APIURL, {
     method: "POST",

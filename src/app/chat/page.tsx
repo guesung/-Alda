@@ -71,10 +71,9 @@ export default async function Page() {
       <ChatMessageList
         chatMessageListProps={CHAT_MESSAGE_LIST}
         userInfoProps={USER_INFO}
-        nameList={nameList}
-        contentList={contentList}
+        drugDatabase={drugDatabase}
       />
-      <ChatInput nameList={nameList} contentList={contentList} />
+      <ChatInput drugDatabase={drugDatabase} />
       <div className="h-20" />
     </div>
   );

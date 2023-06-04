@@ -5,11 +5,10 @@ import { useRecoilState } from "recoil";
 import { chatMessageListState, isTypingState, userInfoState } from "store";
 
 interface PropsType {
-  nameList: string[];
-  contentList: string[];
+  drugDatabase: any[];
 }
 
-export default function SelectMessage({ nameList, contentList }: PropsType) {
+export default function SelectMessage({ drugDatabase }: PropsType) {
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const [isTyping, setIsTyping] = useRecoilState(isTypingState);
 
@@ -35,8 +34,7 @@ export default function SelectMessage({ nameList, contentList }: PropsType) {
     });
 
     await runOpenAI(
-      nameList,
-      contentList,
+      drugDatabase,
       question,
       [
         ...chatMessageList,
