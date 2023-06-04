@@ -41,7 +41,7 @@ export default function ChatMessageList({
                 src="/icons/alda.svg"
                 width={100}
                 height={100}
-                className="absolute left-10 bottom-10 -z-1"
+                className="absolute left-[5rem] bottom-[2.7rem] -z-1"
               />
               <div className="mt-20 relative">
                 <ChatMessage
@@ -54,7 +54,7 @@ export default function ChatMessageList({
         if (
           chatMessage.isMine === false &&
           index === chatMessageList.length - 1 &&
-          index > 0
+          index > -1
         )
           return (
             <div key={chatMessage.id}>

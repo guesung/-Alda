@@ -7,5 +7,5 @@ export interface chatMessageType {
 export interface userInfoType {
   name: string;
   drug: string;
-  selectQuestion: string[];
+  selectQuestionList: string[];
 }

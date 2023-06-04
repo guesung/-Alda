@@ -147,8 +147,8 @@ export default function ChatInput({ nameList, contentList }: PropsType) {
           <Image
             src="/icons/send.svg"
             alt="send"
-            width={45}
-            height={45}
+            width={40}
+            height={40}
             className="ml-5"
           />
         </button>
