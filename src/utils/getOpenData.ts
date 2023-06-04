@@ -1,16 +1,13 @@
-export const getOpenData = async ({
-  url,
-  serviceKey,
-}: {
-  url: string;
-  serviceKey: string;
-}) => {
-  const openData: any[] = [];
+const fs = require("fs");
+const path = require("path");
+
+const getOpenData = async () => {
+  const openData = [];
 
   let isFinish = false;
-  for (let i = 1; i < 10; i++) {
+  for (let i = 1; i < 3; i++) {
     const response = await fetch(
-      `${url}?ServiceKey=${serviceKey}&type=json&numOfRows=${100}&pageNo=${i}`
+      `${"http://apis.data.go.kr/1471000/DrbEasyDrugInfoService/getDrbEasyDrugList"}?ServiceKey=${"dLIzfarVErjrIRr1G76y2ayIhVjZy4xWEcgncqSmGas%2BxJXxSVR4oEGCegUszVf6iBHXUakRT4Rho6MEvlSv6g%3D%3D"}&type=json&itemName=타이레놀`
     );
 
     if (response.ok) {
@@ -24,10 +21,13 @@ export const getOpenData = async ({
     } else {
       alert("데이터 받아오던 중 에러 발생");
     }
-
     if (isFinish) break;
   }
-
+  const savePath = path.join(__dirname, "../../public/data");
+  const saveFileName = path.join(savePath, "data.js");
+  fs.writeFileSync(saveFileName, JSON.stringify(openData));
   console.log(openData);
   return openData;
 };
+
+getOpenData();
