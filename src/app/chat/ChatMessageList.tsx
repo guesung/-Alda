@@ -8,6 +8,7 @@ import { useRecoilState } from "recoil";
 import { chatMessageListState, userInfoState } from "store";
 import { chatMessageType, userInfoType } from "types/chat";
 import SelectMessage from "./SelectMessage";
+import { getOpenData } from "@utils/getOpenData";
 
 interface PropsType {
   chatMessageListProps: chatMessageType[];
@@ -35,24 +36,16 @@ export default function ChatMessageList({
     setUserInfo(userInfoProps);
   }, [chatMessageListProps, setChatMessageList, setUserInfo, userInfoProps]);
 
-  const doAPI = async () => {
-    const xhr = new XMLHttpRequest();
-    const url = `http://apis.data.go.kr/1471000/DrbEasyDrugInfoService/getDrbEasyDrugList?ServiceKey=${EncodingKey}&type=json&numOfRows=100&pageNo=1`;
-    xhr.open("GET", url);
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === XMLHttpRequest.DONE) {
-        const status = xhr.status;
-        if (status === 0 || (status >= 200 && status < 400)) {
-          console.log(JSON.parse(xhr.responseText).body.items);
-        } else {
-          alert("데이터 받아오던 중 에러 발생");
-        }
-      }
-    };
-    xhr.send("");
+  const doA = async () => {
+    const a = await getOpenData({
+      url: "http://apis.data.go.kr/1471000/DrbEasyDrugInfoService/getDrbEasyDrugList",
+      serviceKey: EncodingKey,
+    });
+    console.log(a);
   };
+
   useEffect(() => {
-    doAPI();
+    doA();
   }, []);
 
   return (
