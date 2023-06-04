@@ -6,13 +6,13 @@ import Image from "next/image";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { chatMessageListState, userInfoState } from "store";
-import { chatMessageType, userInfoType } from "types/chat";
+import { chatMessageType, drugType, userInfoType } from "types/chat";
 import SelectMessage from "./SelectMessage";
 
 interface PropsType {
   chatMessageListProps: chatMessageType[];
   userInfoProps: userInfoType;
-  drugDatabase: any[];
+  drugDatabase: drugType[];
 }
 
 const EncodingKey = "";

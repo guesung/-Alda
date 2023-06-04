@@ -22,17 +22,17 @@ export default function ChatInput({ drugDatabase }: PropsType) {
     []
   );
 
-  // useEffect(() => {
-  //   const debounce = setTimeout(() => {
-  //     if (input)
-  //       setAutoCompleteWordList(
-  //         nameList.filter((name) => name.includes(input))
-  //       );
-  //   }, 200);
-  //   return () => {
-  //     clearTimeout(debounce);
-  //   };
-  // }, [input, nameList]);
+  useEffect(() => {
+    const debounce = setTimeout(() => {
+      if (input)
+        setAutoCompleteWordList(
+          drugDatabase.filter((drug) => drug.itemName.includes(input))
+        );
+    }, 200);
+    return () => {
+      clearTimeout(debounce);
+    };
+  }, [input, drugDatabase]);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -55,12 +55,6 @@ export default function ChatInput({ drugDatabase }: PropsType) {
       ...chatMessageList,
       { id: chatMessageList.length + 1, message: input, isMine: true },
     ]);
-    if (userInfo.drug === "") {
-      setUserInfo({
-        ...userInfo,
-        drug: input,
-      });
-    }
 
     const inputSave = input;
     setInput("");
@@ -85,7 +79,7 @@ export default function ChatInput({ drugDatabase }: PropsType) {
     if (userInfo.drug === "") {
       setUserInfo({
         ...userInfo,
-        drug: input,
+        drug: word,
       });
     }
     await runOpenAI(
@@ -109,15 +103,15 @@ export default function ChatInput({ drugDatabase }: PropsType) {
         className="absolute overflow-scroll w-full"
         style={{ top: `-${heightValue}`, height: `${heightValue}` }}
       >
-        {autoCompleteWordList.map((word: string, index: number) => (
+        {autoCompleteWordList.map((drug: any, index: number) => (
           <p
             onClick={() => {
-              handleAutoCompleteClick(word);
+              handleAutoCompleteClick(drug.itemName);
             }}
             key={index}
             className="h-[3.125rem] flex items-center border-t border-[#EEE] px-5 text-[#707478]"
           >
-            {word}
+            {drug.itemName}
           </p>
         ))}
       </div>
