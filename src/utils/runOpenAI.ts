@@ -1,10 +1,9 @@
-import { chatMessageType, userInfoType } from "types/chat";
+import { chatMessageType, drugType, userInfoType } from "types/chat";
 
 const APIURL = "https://api.openai.com/v1/chat/completions";
 
 export const runOpenAI = async (
-  nameList: string[],
-  contentList: string[],
+  drugDatabase: drugType[],
   inputValue: string,
   chatMessageListState: chatMessageType[],
   setChatMessageListState: (answer: any) => void,
@@ -29,18 +28,28 @@ export const runOpenAI = async (
       content: `사용자가 선택한 약은 ${userInfo.drug}이야`,
     });
   }
-  messageData.push({
-    role: "user",
-    content: `${inputValue} 에 대해 말해줘`,
-  });
 
   // 필요한 데이터 넣기
-  const findDrugIndex = nameList.findIndex((name: string) =>
-    name.includes(inputValue)
-  );
-  const findDrug = contentList[findDrugIndex];
+  const drugInformation = drugDatabase.find((drugData: drugType) => {
+    if (
+      drugData.itemName.includes(inputValue) ||
+      (userInfo.drug !== "" && drugData.itemName.includes(userInfo.drug))
+    ) {
+      return drugData;
+    }
+  });
 
-  if (findDrug) messageData.push({ role: "system", content: findDrug });
+  if (!!drugInformation) {
+    messageData.push({
+      role: "system",
+      content: JSON.stringify(drugInformation),
+    });
+  }
+
+  messageData.push({
+    role: "user",
+    content: `사용자가 먹는 약의 ${inputValue} 에 대해 말해줘`,
+  });
 
   const response = await fetch(APIURL, {
     method: "POST",

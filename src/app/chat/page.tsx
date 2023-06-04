@@ -1,20 +1,13 @@
+import { drugType } from "types/chat";
 import ChatInput from "./ChatInput";
 import ChatMessageList from "./ChatMessageList";
 import Header from "./Header";
 
-const DRUG_DATA_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/get-data`;
+const DRUG_JSON_DATA_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/get-data`;
 
-interface csvDataType {
-  metaData: {
-    source: string;
-    line: number;
-  };
-  pageContent: string;
-}
-
-async function getDrugData() {
+async function getJSONData(num: number) {
   try {
-    const res = await fetch(DRUG_DATA_URL);
+    const res = await fetch(DRUG_JSON_DATA_URL + "?page=" + num);
     return res.json();
   } catch (error) {
     return error;
@@ -27,7 +20,7 @@ const USER_INFO = {
   selectQuestionList: [
     "복용 방법과 시간",
     "피해야 할 약, 음식",
-    "부작용 대법",
+    "부작용 대처법",
     "보관 방법",
   ],
 };
@@ -41,13 +34,11 @@ const CHAT_MESSAGE_LIST = [
 ];
 
 export default async function Page() {
-  const drugData = await getDrugData();
-  const contentList: string[] = drugData.map(
-    (it: csvDataType) => it.pageContent
-  );
-  const nameList: string[] = drugData.map(
-    (it: csvDataType) => it.pageContent.split("\n")[3].split(":")[1]
-  );
+  const drugDatabase: drugType[] = [];
+  for (let i = 1; i <= 5; i++) {
+    const res = await getJSONData(i);
+    drugDatabase.push(...res);
+  }
 
   return (
     <div className="overflow-scroll">
@@ -55,10 +46,9 @@ export default async function Page() {
       <ChatMessageList
         chatMessageListProps={CHAT_MESSAGE_LIST}
         userInfoProps={USER_INFO}
-        nameList={nameList}
-        contentList={contentList}
+        drugDatabase={drugDatabase}
       />
-      <ChatInput nameList={nameList} contentList={contentList} />
+      <ChatInput drugDatabase={drugDatabase} />
       <div className="h-20" />
     </div>
   );

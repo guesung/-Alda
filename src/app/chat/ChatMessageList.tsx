@@ -6,21 +6,21 @@ import Image from "next/image";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { chatMessageListState, userInfoState } from "store";
-import { chatMessageType, userInfoType } from "types/chat";
+import { chatMessageType, drugType, userInfoType } from "types/chat";
 import SelectMessage from "./SelectMessage";
 
 interface PropsType {
   chatMessageListProps: chatMessageType[];
   userInfoProps: userInfoType;
-  nameList: string[];
-  contentList: string[];
+  drugDatabase: drugType[];
 }
+
+const EncodingKey = "";
 
 export default function ChatMessageList({
   chatMessageListProps,
   userInfoProps,
-  nameList,
-  contentList,
+  drugDatabase,
 }: PropsType) {
   const [chatMessageList, setChatMessageList] =
     useRecoilState(chatMessageListState);
@@ -63,7 +63,7 @@ export default function ChatMessageList({
                 isMine={chatMessage.isMine}
                 key={chatMessage.id}
               />
-              <SelectMessage nameList={nameList} contentList={contentList} />
+              <SelectMessage drugDatabase={drugDatabase} />
             </div>
           );
         return (

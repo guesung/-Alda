@@ -5,14 +5,12 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { chatMessageListState, isTypingState, userInfoState } from "store";
-import AudiodioRecord from "./AudioRecord";
 
 interface PropsType {
-  nameList: string[];
-  contentList: string[];
+  drugDatabase: any[];
 }
 
-export default function ChatInput({ nameList, contentList }: PropsType) {
+export default function ChatInput({ drugDatabase }: PropsType) {
   const [input, setInput] = useState<string>("");
 
   const [isTyping, setIsTyping] = useRecoilState(isTypingState);
@@ -28,13 +26,13 @@ export default function ChatInput({ nameList, contentList }: PropsType) {
     const debounce = setTimeout(() => {
       if (input)
         setAutoCompleteWordList(
-          nameList.filter((name) => name.includes(input))
+          drugDatabase.filter((drug) => drug.itemName.includes(input))
         );
     }, 200);
     return () => {
       clearTimeout(debounce);
     };
-  }, [input, nameList]);
+  }, [input, drugDatabase]);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -57,18 +55,11 @@ export default function ChatInput({ nameList, contentList }: PropsType) {
       ...chatMessageList,
       { id: chatMessageList.length + 1, message: input, isMine: true },
     ]);
-    if (userInfo.drug === "") {
-      setUserInfo({
-        ...userInfo,
-        drug: input,
-      });
-    }
 
     const inputSave = input;
     setInput("");
     await runOpenAI(
-      nameList,
-      contentList,
+      drugDatabase,
       inputSave,
       [
         ...chatMessageList,
@@ -88,12 +79,11 @@ export default function ChatInput({ nameList, contentList }: PropsType) {
     if (userInfo.drug === "") {
       setUserInfo({
         ...userInfo,
-        drug: input,
+        drug: word,
       });
     }
     await runOpenAI(
-      nameList,
-      contentList,
+      drugDatabase,
       word,
       [
         ...chatMessageList,
@@ -113,15 +103,15 @@ export default function ChatInput({ nameList, contentList }: PropsType) {
         className="absolute overflow-scroll w-full"
         style={{ top: `-${heightValue}`, height: `${heightValue}` }}
       >
-        {autoCompleteWordList.map((word: string, index: number) => (
+        {autoCompleteWordList.map((drug: any, index: number) => (
           <p
             onClick={() => {
-              handleAutoCompleteClick(word);
+              handleAutoCompleteClick(drug.itemName);
             }}
             key={index}
             className="h-[3.125rem] flex items-center border-t border-[#EEE] px-5 text-[#707478]"
           >
-            {word}
+            {drug.itemName}
           </p>
         ))}
       </div>
