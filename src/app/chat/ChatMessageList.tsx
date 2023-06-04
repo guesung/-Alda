@@ -8,7 +8,6 @@ import { useRecoilState } from "recoil";
 import { chatMessageListState, userInfoState } from "store";
 import { chatMessageType, userInfoType } from "types/chat";
 import SelectMessage from "./SelectMessage";
-import { getOpenData } from "@utils/getOpenData";
 
 interface PropsType {
   chatMessageListProps: chatMessageType[];
@@ -17,10 +16,7 @@ interface PropsType {
   contentList: string[];
 }
 
-const EncodingKey =
-  "dLIzfarVErjrIRr1G76y2ayIhVjZy4xWEcgncqSmGas%2BxJXxSVR4oEGCegUszVf6iBHXUakRT4Rho6MEvlSv6g%3D%3D";
-const decodingKey =
-  "dLIzfarVErjrIRr1G76y2ayIhVjZy4xWEcgncqSmGas+xJXxSVR4oEGCegUszVf6iBHXUakRT4Rho6MEvlSv6g==";
+const EncodingKey = "";
 
 export default function ChatMessageList({
   chatMessageListProps,
@@ -35,18 +31,6 @@ export default function ChatMessageList({
     setChatMessageList(chatMessageListProps);
     setUserInfo(userInfoProps);
   }, [chatMessageListProps, setChatMessageList, setUserInfo, userInfoProps]);
-
-  const doA = async () => {
-    const a = await getOpenData({
-      url: "http://apis.data.go.kr/1471000/DrbEasyDrugInfoService/getDrbEasyDrugList",
-      serviceKey: EncodingKey,
-    });
-    console.log(a);
-  };
-
-  useEffect(() => {
-    doA();
-  }, []);
 
   return (
     <article>

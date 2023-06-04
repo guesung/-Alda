@@ -1,9 +1,10 @@
 import ChatInput from "./ChatInput";
 import ChatMessageList from "./ChatMessageList";
 import Header from "./Header";
+import { openData } from "constants/openData";
 
 const DRUG_DATA_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/get-data`;
-
+const DRUG_JSON_DATA_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/get-json-data`;
 interface csvDataType {
   metaData: {
     source: string;
@@ -15,6 +16,15 @@ interface csvDataType {
 async function getDrugData() {
   try {
     const res = await fetch(DRUG_DATA_URL);
+    return res.json();
+  } catch (error) {
+    return error;
+  }
+}
+
+async function getJSONData() {
+  try {
+    const res = await fetch(DRUG_JSON_DATA_URL);
     return res.json();
   } catch (error) {
     return error;
@@ -48,6 +58,9 @@ export default async function Page() {
   const nameList: string[] = drugData.map(
     (it: csvDataType) => it.pageContent.split("\n")[3].split(":")[1]
   );
+
+  const apiData = await getJSONData();
+  console.log(apiData);
 
   return (
     <div className="overflow-scroll">
