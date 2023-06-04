@@ -154,7 +154,7 @@ export default function ChatInput({ nameList, contentList }: PropsType) {
           />
         </button>
       </form>
-      <AudiodioRecord />
+      {/* <AudiodioRecord /> */}
     </div>
   );
 }
