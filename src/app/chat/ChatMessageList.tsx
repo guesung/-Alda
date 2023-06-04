@@ -16,6 +16,11 @@ interface PropsType {
   contentList: string[];
 }
 
+const EncodingKey =
+  "dLIzfarVErjrIRr1G76y2ayIhVjZy4xWEcgncqSmGas%2BxJXxSVR4oEGCegUszVf6iBHXUakRT4Rho6MEvlSv6g%3D%3D";
+const decodingKey =
+  "dLIzfarVErjrIRr1G76y2ayIhVjZy4xWEcgncqSmGas+xJXxSVR4oEGCegUszVf6iBHXUakRT4Rho6MEvlSv6g==";
+
 export default function ChatMessageList({
   chatMessageListProps,
   userInfoProps,
@@ -29,6 +34,26 @@ export default function ChatMessageList({
     setChatMessageList(chatMessageListProps);
     setUserInfo(userInfoProps);
   }, [chatMessageListProps, setChatMessageList, setUserInfo, userInfoProps]);
+
+  const doAPI = async () => {
+    const xhr = new XMLHttpRequest();
+    const url = `http://apis.data.go.kr/1471000/DrbEasyDrugInfoService/getDrbEasyDrugList?ServiceKey=${EncodingKey}&type=json&numOfRows=100&pageNo=1`;
+    xhr.open("GET", url);
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        const status = xhr.status;
+        if (status === 0 || (status >= 200 && status < 400)) {
+          console.log(JSON.parse(xhr.responseText).body.items);
+        } else {
+          alert("데이터 받아오던 중 에러 발생");
+        }
+      }
+    };
+    xhr.send("");
+  };
+  useEffect(() => {
+    doAPI();
+  }, []);
 
   return (
     <article>
