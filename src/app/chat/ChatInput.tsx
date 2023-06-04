@@ -5,7 +5,6 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { chatMessageListState, isTypingState, userInfoState } from "store";
-import AudiodioRecord from "./AudioRecord";
 
 interface PropsType {
   nameList: string[];
