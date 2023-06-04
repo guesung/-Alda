@@ -1,11 +1,8 @@
+import ChatInput from "./ChatInput";
 import ChatMessageList from "./ChatMessageList";
 import Header from "./Header";
-import ChatInput from "./ChatInput";
-import { database } from "@utils/firebase";
-import { onValue, ref } from "firebase/database";
 
 const DRUG_DATA_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/get-data`;
-const USER_INFO_URL = `${process.env.NEXT_PUBLIC_FIREBASE_URL}`;
 
 interface csvDataType {
   metaData: {
@@ -27,11 +24,11 @@ async function getDrugData() {
 const USER_INFO = {
   name: "알다",
   drug: "",
-  selectQuestion: [
-    "효능",
+  selectQuestionList: [
     "복용 방법과 시간",
-    "피해야 할 음식, 약물",
-    "주의사항",
+    "피해야 할 약, 음식",
+    "부작용 대법",
+    "보관 방법",
   ],
 };
 
