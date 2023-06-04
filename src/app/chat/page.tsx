@@ -1,7 +1,6 @@
 import ChatInput from "./ChatInput";
 import ChatMessageList from "./ChatMessageList";
 import Header from "./Header";
-import { openData } from "constants/openData";
 
 const DRUG_DATA_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/get-data`;
 const DRUG_JSON_DATA_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/get-json-data`;
@@ -22,9 +21,9 @@ async function getDrugData() {
   }
 }
 
-async function getJSONData() {
+async function getJSONData(num: number) {
   try {
-    const res = await fetch(DRUG_JSON_DATA_URL);
+    const res = await fetch(DRUG_JSON_DATA_URL + "?page=" + num);
     return res.json();
   } catch (error) {
     return error;
@@ -59,8 +58,12 @@ export default async function Page() {
     (it: csvDataType) => it.pageContent.split("\n")[3].split(":")[1]
   );
 
-  const apiData = await getJSONData();
-  console.log(apiData);
+  const drugDatabase: any[] = [];
+  for (let i = 1; i <= 5; i++) {
+    const res = await getJSONData(i);
+    drugDatabase.push(res);
+  }
+  console.log(drugDatabase);
 
   return (
     <div className="overflow-scroll">
