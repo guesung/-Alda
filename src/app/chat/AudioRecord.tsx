@@ -32,7 +32,6 @@ export default function AudioRecord() {
 							</button>
 						)}
 
-						{/* 다운로드 */}
 						<a href={mediaBlobUrl} download="my-audio-file.mp3">
 							Download
 						</a>
