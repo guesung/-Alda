@@ -24,6 +24,8 @@
     "next": "13.4.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-media-recorder": "^1.6.6",
+    "react-nextjs-record": "^0.0.7",
     "recoil": "^0.7.7",
     "typescript": "5.0.4"
   },
