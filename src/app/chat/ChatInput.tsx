@@ -98,28 +98,30 @@ export default function ChatInput({ drugDatabase }: PropsType) {
   const heightValue = `${Math.min(autoCompleteWordList.length, 4) * 3.125}rem`;
 
   return (
-    <div className="fixed max-w-[28.125rem] bottom-0 left-0 right-0 m-auto h-[4rem] bg-[#FFF] shadow-lg flex justify-center items-center">
+    <div className="fixed bottom-0 left-0 right-0 m-auto h-[4rem] bg-[#FFF] shadow-lg flex justify-center items-center ">
       <div
         className="absolute overflow-scroll w-full"
         style={{ top: `-${heightValue}`, height: `${heightValue}` }}
       >
-        {autoCompleteWordList.map((drug: any, index: number) => (
-          <p
-            onClick={() => {
-              handleAutoCompleteClick(drug.itemName);
-            }}
-            key={index}
-            className="h-[3.125rem] flex items-center border-t border-[#EEE] px-5 text-[#707478]"
-          >
-            {drug.itemName}
-          </p>
-        ))}
+        {input.length > 0 &&
+          userInfo.drug === "" &&
+          autoCompleteWordList.map((drug: any, index: number) => (
+            <p
+              onClick={() => {
+                handleAutoCompleteClick(drug.itemName);
+              }}
+              key={index}
+              className="h-[3.125rem] flex items-center border-t border-[#EEE] px-5 text-[#707478]"
+            >
+              {drug.itemName}
+            </p>
+          ))}
       </div>
       <form className="flex" onSubmit={handleSubmit}>
-        <div className="bg-gradient-to-r rounded-[1.875rem] h-[2.6rem] w-[17rem] flex justify-center items-center from-[#14C8C8] via-[#D5E7F3] to-[#C1CFFF] relative">
+        <div className="bg-gradient-to-r rounded-[1.875rem] max-h-[2.6rem] flex justify-center items-center from-[#14C8C8] via-[#D5E7F3] to-[#C1CFFF] relative">
           <input
             type="text"
-            className="h-[2.5rem] w-[16.9375rem] border rounded-[1.875rem] px-[1.25rem] text-[#34363C] placeholder-[#ACACAC] focus:outline-none"
+            className="h-[2.5rem]  border rounded-[1.875rem] px-[1.25rem] text-[#34363C] placeholder-[#ACACAC] focus:outline-none"
             onChange={(e) => {
               setInput(e.target.value);
             }}
