@@ -1,4 +1,6 @@
+type messageType = "message" | "button" | "buttonSelected";
 export interface chatMessageType {
+  type: messageType;
   id: number;
   message: string;
   isMine: boolean;

@@ -61,7 +61,12 @@ export default function ChatInput({ drugDatabase }: PropsType) {
 
     setChatMessageList((chatMessageList) => [
       ...chatMessageList,
-      { id: chatMessageList.length + 1, message: input, isMine: true },
+      {
+        type: "message",
+        id: chatMessageList.length + 1,
+        message: input,
+        isMine: true,
+      },
     ]);
 
     const inputSave = input;
@@ -71,7 +76,12 @@ export default function ChatInput({ drugDatabase }: PropsType) {
       inputValue: inputSave,
       chatMessageListState: [
         ...chatMessageList,
-        { id: chatMessageList.length + 1, message: inputSave, isMine: true },
+        {
+          type: "message",
+          id: chatMessageList.length + 1,
+          message: inputSave,
+          isMine: true,
+        },
       ],
       setChatMessageListState: setChatMessageList,
       userInfo,
@@ -95,7 +105,12 @@ export default function ChatInput({ drugDatabase }: PropsType) {
       inputValue: word,
       chatMessageListState: [
         ...chatMessageList,
-        { id: chatMessageList.length + 1, message: word, isMine: true },
+        {
+          type: "message",
+          id: chatMessageList.length + 1,
+          message: word,
+          isMine: true,
+        },
       ],
       setChatMessageListState: setChatMessageList,
       userInfo,

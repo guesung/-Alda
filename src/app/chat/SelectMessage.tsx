@@ -21,7 +21,12 @@ export default function SelectMessage({ drugDatabase }: PropsType) {
 
     setChatMessageList((chatMessageList) => [
       ...chatMessageList,
-      { id: chatMessageList.length + 1, message: question, isMine: true },
+      {
+        type: "message",
+        id: chatMessageList.length + 1,
+        message: question,
+        isMine: true,
+      },
     ]);
 
     setUserInfo((userInfo) => {
@@ -38,7 +43,12 @@ export default function SelectMessage({ drugDatabase }: PropsType) {
       inputValue: question,
       chatMessageListState: [
         ...chatMessageList,
-        { id: chatMessageList.length + 1, message: question, isMine: true },
+        {
+          type: "message",
+          id: chatMessageList.length + 1,
+          message: question,
+          isMine: true,
+        },
       ],
       setChatMessageListState: setChatMessageList,
       userInfo,
