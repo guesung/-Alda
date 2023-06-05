@@ -10,13 +10,11 @@ import { chatMessageType, drugType, userInfoType } from "types/chat";
 import SelectMessage from "./SelectMessage";
 
 interface PropsType {
-  chatMessageListProps: chatMessageType[];
   userInfoProps: userInfoType;
   drugDatabase: drugType[];
 }
 
 export default function ChatMessageList({
-  chatMessageListProps,
   userInfoProps,
   drugDatabase,
 }: PropsType) {
@@ -27,9 +25,8 @@ export default function ChatMessageList({
   const [isTyping, setIsTyping] = useRecoilState(isTypingState);
 
   useEffect(() => {
-    setChatMessageList(chatMessageListProps);
     setUserInfo(userInfoProps);
-  }, [chatMessageListProps, setChatMessageList, setUserInfo, userInfoProps]);
+  }, [setUserInfo, userInfoProps]);
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chatMessageList, userInfo, isTyping]);

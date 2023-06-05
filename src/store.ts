@@ -5,7 +5,7 @@ const chatMessageListState = atom({
   default: [
     {
       id: 1,
-      message: "안녕하세요.\nAI 챗봇 알다입니다. \n약 이름을 입력 해주세요.",
+      message: "안녕하세요.\nAI 챗봇 알다입니다. \n약 이름을 입력 해주세요.  ",
       isMine: false,
     },
   ],

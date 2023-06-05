@@ -1,17 +1,8 @@
+import { getOpenData } from "@utils/getOpenData";
 import { drugType } from "types/chat";
 import ChatInput from "./ChatInput";
 import ChatMessageList from "./ChatMessageList";
 import Header from "./Header";
-import { getOpenData } from "@utils/getOpenData";
-
-async function getDrugData(num: number) {
-  try {
-    const res = await getOpenData(num);
-    return res;
-  } catch (error) {
-    return error;
-  }
-}
 
 const USER_INFO = {
   name: "알다",
@@ -24,13 +15,14 @@ const USER_INFO = {
   ],
 };
 
-const CHAT_MESSAGE_LIST = [
-  {
-    id: 1,
-    message: "안녕하세요.\nAI 챗봇 알다입니다. \n약 이름을 입력 해주세요.  ",
-    isMine: false,
-  },
-];
+async function getDrugData(num: number) {
+  try {
+    const res = await getOpenData(num);
+    return res;
+  } catch (error) {
+    return error;
+  }
+}
 
 export default async function Page() {
   const requests = [];
@@ -52,11 +44,7 @@ export default async function Page() {
   return (
     <div className="overflow-scroll">
       <Header />
-      <ChatMessageList
-        chatMessageListProps={CHAT_MESSAGE_LIST}
-        userInfoProps={USER_INFO}
-        drugDatabase={drugDatabase}
-      />
+      <ChatMessageList userInfoProps={USER_INFO} drugDatabase={drugDatabase} />
       <ChatInput drugDatabase={drugDatabase} />
       <div className="h-20" />
     </div>
