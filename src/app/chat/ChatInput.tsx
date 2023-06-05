@@ -1,5 +1,6 @@
 "use client";
 
+import Toast from "@components/toast";
 import { runOpenAI } from "@utils/runOpenAI";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -99,6 +100,7 @@ export default function ChatInput({ drugDatabase }: PropsType) {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 m-auto h-[4rem] bg-[#FFF] shadow-lg flex justify-center items-center ">
+      <Toast message="약을 선택해주세요." />
       <div
         className="absolute overflow-scroll w-full"
         style={{ top: `-${heightValue}`, height: `${heightValue}` }}
