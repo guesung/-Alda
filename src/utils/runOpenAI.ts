@@ -104,6 +104,7 @@ export const runOpenAI = async ({
           setChatMessageListState([
             ...chatMessageListState,
             {
+              type: "message",
               id: chatMessageListState.length + 1,
               message: content,
               isMine: false,
@@ -114,6 +115,7 @@ export const runOpenAI = async ({
           setChatMessageListState((prev: chatMessageType[]) => [
             ...prev.slice(0, prev.length - 1),
             {
+              type: "message",
               id: prev.length,
               message: prev[prev.length - 1].message + content,
               isMine: false,
@@ -123,4 +125,13 @@ export const runOpenAI = async ({
       }
     }
   }
+  setChatMessageListState((prev: chatMessageType[]) => [
+    ...prev,
+    {
+      type: "button",
+      id: prev.length + 1,
+      message: "끝",
+      isMine: false,
+    },
+  ]);
 };

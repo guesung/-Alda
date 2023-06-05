@@ -55,22 +55,23 @@ export default function SelectMessage({ drugDatabase }: PropsType) {
     });
     setIsTyping(false);
   };
-  if (!isTyping)
-    return (
-      <div className="flex overflow-scroll gap-3">
-        {userInfo.selectQuestionList &&
-          userInfo.selectQuestionList.map((question, index) => (
-            <div
-              key={index}
-              className="px-[1.125rem] py-[0.75rem] rounded-[0.625rem] border border-[#F0F0F0] whitespace-nowrap"
-              onClick={() => {
-                handleSelectClick(question);
-              }}
-            >
-              {question}
-            </div>
-          ))}
-      </div>
-    );
-  else return <></>;
+
+  return isTyping ? (
+    <></>
+  ) : (
+    <div className="flex overflow-scroll gap-3">
+      {userInfo.selectQuestionList &&
+        userInfo.selectQuestionList.map((question, index) => (
+          <div
+            key={index}
+            className="px-[1.125rem] py-[0.75rem] rounded-[0.625rem] border border-[#F0F0F0] whitespace-nowrap"
+            onClick={() => {
+              handleSelectClick(question);
+            }}
+          >
+            {question}
+          </div>
+        ))}
+    </div>
+  );
 }

@@ -23,7 +23,7 @@ export default function ChatMessageList({ drugDatabase }: PropsType) {
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chatMessageList, userInfo, isTyping]);
-
+  console.log(chatMessageList);
   return (
     <article className="max-w-[28.125rem]">
       <Image
@@ -35,25 +35,10 @@ export default function ChatMessageList({ drugDatabase }: PropsType) {
       />
       <div className="mt-[5.375rem] z-30 relative">
         {chatMessageList.map((chatMessage: chatMessageType, index: number) => {
-          if (
-            chatMessage.isMine === false &&
-            index === chatMessageList.length - 1 &&
-            index > 0
-          )
-            return (
-              <div key={chatMessage.id}>
-                <ChatMessage
-                  message={chatMessage.message}
-                  isMine={chatMessage.isMine}
-                  key={chatMessage.id}
-                />
-                <SelectMessage drugDatabase={drugDatabase} />
-              </div>
-            );
           return (
             <ChatMessage
-              message={chatMessage.message}
-              isMine={chatMessage.isMine}
+              chatMessage={chatMessage}
+              drugDatabase={drugDatabase}
               key={chatMessage.id}
             />
           );

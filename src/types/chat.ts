@@ -1,8 +1,7 @@
-type messageType = "message" | "button" | "buttonSelected";
 export interface chatMessageType {
-  type: messageType;
+  type: string;
   id: number;
-  message: string;
+  message: string | string[];
   isMine: boolean;
 }
 
