@@ -2,13 +2,21 @@ import { chatMessageType, drugType, userInfoType } from "types/chat";
 
 const APIURL = "https://api.openai.com/v1/chat/completions";
 
-export const runOpenAI = async (
-  drugDatabase: drugType[],
-  inputValue: string,
-  chatMessageListState: chatMessageType[],
-  setChatMessageListState: (answer: any) => void,
-  userInfo: userInfoType
-) => {
+interface PropsType {
+  drugDatabase: drugType[];
+  inputValue: string;
+  chatMessageListState: chatMessageType[];
+  setChatMessageListState: (answer: any) => void;
+  userInfo: userInfoType;
+}
+
+export const runOpenAI = async ({
+  drugDatabase,
+  inputValue,
+  chatMessageListState,
+  setChatMessageListState,
+  userInfo,
+}: PropsType) => {
   const messageData = [
     {
       role: "system",
@@ -92,7 +100,7 @@ export const runOpenAI = async (
       const { content } = delta;
       if (content) {
         if (isFirst) {
-          setChatMessageListState((prev: chatMessageType[]) => [
+          setChatMessageListState([
             ...chatMessageListState,
             {
               id: chatMessageListState.length + 1,

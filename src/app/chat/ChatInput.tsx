@@ -66,16 +66,16 @@ export default function ChatInput({ drugDatabase }: PropsType) {
 
     const inputSave = input;
     setInput("");
-    await runOpenAI(
+    await runOpenAI({
       drugDatabase,
-      inputSave,
-      [
+      inputValue: inputSave,
+      chatMessageListState: [
         ...chatMessageList,
         { id: chatMessageList.length + 1, message: inputSave, isMine: true },
       ],
-      setChatMessageList,
-      userInfo
-    );
+      setChatMessageListState: setChatMessageList,
+      userInfo,
+    });
     setIsTyping(false);
   };
 
@@ -90,16 +90,16 @@ export default function ChatInput({ drugDatabase }: PropsType) {
         drug: word,
       });
     }
-    await runOpenAI(
+    await runOpenAI({
       drugDatabase,
-      word,
-      [
+      inputValue: word,
+      chatMessageListState: [
         ...chatMessageList,
         { id: chatMessageList.length + 1, message: word, isMine: true },
       ],
-      setChatMessageList,
-      userInfo
-    );
+      setChatMessageListState: setChatMessageList,
+      userInfo,
+    });
     setIsTyping(false);
   };
 
