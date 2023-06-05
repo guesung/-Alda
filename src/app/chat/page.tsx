@@ -34,7 +34,7 @@ const CHAT_MESSAGE_LIST = [
 
 export default async function Page() {
   const requests = [];
-  for (let i = 1; i <= 45; i++) {
+  for (let i = 1; i <= 450; i++) {
     requests.push(getDrugData(i));
   }
 
