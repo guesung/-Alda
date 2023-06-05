@@ -2,13 +2,12 @@ import { drugType } from "types/chat";
 import ChatInput from "./ChatInput";
 import ChatMessageList from "./ChatMessageList";
 import Header from "./Header";
-
-const DRUG_JSON_DATA_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/get-data`;
+import { getOpenData } from "@utils/getOpenData";
 
 async function getDrugData(num: number) {
   try {
-    const res = await fetch(DRUG_JSON_DATA_URL + "?page=" + num);
-    return res.json();
+    const res = await getOpenData(num);
+    return res;
   } catch (error) {
     return error;
   }
