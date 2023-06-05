@@ -1,5 +1,6 @@
 "use client";
 
+import Toast from "@components/toast";
 import { runOpenAI } from "@utils/runOpenAI";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -22,6 +23,8 @@ export default function ChatInput({ drugDatabase }: PropsType) {
     []
   );
 
+  const [toastMessage, setToastMessage] = useState<string>("");
+
   useEffect(() => {
     const debounce = setTimeout(() => {
       if (input)
@@ -34,18 +37,25 @@ export default function ChatInput({ drugDatabase }: PropsType) {
     };
   }, [input, drugDatabase]);
 
+  useEffect(() => {
+    if (toastMessage.length > 0) {
+      setTimeout(() => {
+        setToastMessage("");
+      }, 2000);
+    }
+  }, [toastMessage]);
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    if (input === "") {
+      return;
+    }
     if (userInfo.drug === "") {
-      alert("약을 선택해주세요");
+      setToastMessage("약을 선택해주세요.");
       return;
     }
     if (isTyping) {
-      alert("대답을 기다려주세요");
-      return;
-    }
-    if (input === "") {
-      alert("메시지를 입력해주세요.");
+      setToastMessage("답변이 끝난 뒤 시도해 주세요.");
       return;
     }
     setIsTyping(true);
@@ -99,6 +109,7 @@ export default function ChatInput({ drugDatabase }: PropsType) {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 m-auto h-[4rem] bg-[#FFF] shadow-lg flex justify-center items-center ">
+      {toastMessage.length > 0 && <Toast message={toastMessage} />}
       <div
         className="absolute overflow-scroll w-full"
         style={{ top: `-${heightValue}`, height: `${heightValue}` }}
