@@ -3,9 +3,9 @@
 import ChatMessage from "@components/chatMessage";
 
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useRecoilState } from "recoil";
-import { chatMessageListState, userInfoState } from "store";
+import { chatMessageListState, isTypingState, userInfoState } from "store";
 import { chatMessageType, drugType, userInfoType } from "types/chat";
 import SelectMessage from "./SelectMessage";
 
@@ -15,8 +15,6 @@ interface PropsType {
   drugDatabase: drugType[];
 }
 
-const EncodingKey = "";
-
 export default function ChatMessageList({
   chatMessageListProps,
   userInfoProps,
@@ -24,14 +22,20 @@ export default function ChatMessageList({
 }: PropsType) {
   const [chatMessageList, setChatMessageList] =
     useRecoilState(chatMessageListState);
+  const messageEndRef = useRef<HTMLDivElement | null>(null);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const [isTyping, setIsTyping] = useRecoilState(isTypingState);
+
   useEffect(() => {
     setChatMessageList(chatMessageListProps);
     setUserInfo(userInfoProps);
   }, [chatMessageListProps, setChatMessageList, setUserInfo, userInfoProps]);
+  useEffect(() => {
+    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chatMessageList, userInfo, isTyping]);
 
   return (
-    <article>
+    <article className="max-w-[28.125rem] ">
       {chatMessageList.map((chatMessage: chatMessageType, index: number) => {
         if (index === 0)
           return (
@@ -74,6 +78,7 @@ export default function ChatMessageList({
           />
         );
       })}
+      <div ref={messageEndRef}></div>
     </article>
   );
 }
