@@ -5,7 +5,7 @@ import Header from "./Header";
 
 const DRUG_JSON_DATA_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/get-data`;
 
-async function getJSONData(num: number) {
+async function getDrugData(num: number) {
   try {
     const res = await fetch(DRUG_JSON_DATA_URL + "?page=" + num);
     return res.json();
@@ -34,10 +34,20 @@ const CHAT_MESSAGE_LIST = [
 ];
 
 export default async function Page() {
+  const requests = [];
+  for (let i = 1; i <= 45; i++) {
+    requests.push(getDrugData(i));
+  }
+
   const drugDatabase: drugType[] = [];
-  for (let i = 1; i <= 5; i++) {
-    const res = await getJSONData(i);
-    drugDatabase.push(...res);
+
+  try {
+    const responses = await Promise.all(requests);
+    for (const res of responses) {
+      drugDatabase.push(...res);
+    }
+  } catch (error) {
+    console.error(error);
   }
 
   return (
