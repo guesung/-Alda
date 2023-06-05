@@ -119,7 +119,7 @@ export default function ChatInput({ drugDatabase }: PropsType) {
         <div className="bg-gradient-to-r rounded-[1.875rem] h-[2.6rem] w-[17rem] flex justify-center items-center from-[#14C8C8] via-[#D5E7F3] to-[#C1CFFF] relative">
           <input
             type="text"
-            className="h-[2.5rem] w-[16.9375rem] border rounded-[1.875rem] px-[1.25rem] text-[#34363C] placeholder-[#ACACAC]"
+            className="h-[2.5rem] w-[16.9375rem] border rounded-[1.875rem] px-[1.25rem] text-[#34363C] placeholder-[#ACACAC] focus:outline-none"
             onChange={(e) => {
               setInput(e.target.value);
             }}
@@ -136,7 +136,7 @@ export default function ChatInput({ drugDatabase }: PropsType) {
         </div>
         <button type="submit">
           <Image
-            src="/icons/send.svg"
+            src={`/icons/send${input.length > 0 ? "_focus" : ""}.svg`}
             alt="send"
             width={40}
             height={40}
