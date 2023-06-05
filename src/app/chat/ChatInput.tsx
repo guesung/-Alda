@@ -13,17 +13,15 @@ interface PropsType {
 
 export default function ChatInput({ drugDatabase }: PropsType) {
   const [input, setInput] = useState<string>("");
+  const [autoCompleteWordList, setAutoCompleteWordList] = useState<string[]>(
+    []
+  );
+  const [toastMessage, setToastMessage] = useState<string>("");
 
   const [isTyping, setIsTyping] = useRecoilState(isTypingState);
   const [chatMessageList, setChatMessageList] =
     useRecoilState(chatMessageListState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
-
-  const [autoCompleteWordList, setAutoCompleteWordList] = useState<string[]>(
-    []
-  );
-
-  const [toastMessage, setToastMessage] = useState<string>("");
 
   useEffect(() => {
     const debounce = setTimeout(() => {
