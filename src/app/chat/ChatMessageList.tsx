@@ -25,49 +25,40 @@ export default function ChatMessageList({ drugDatabase }: PropsType) {
   }, [chatMessageList, userInfo, isTyping]);
 
   return (
-    <article className="max-w-[28.125rem] ">
-      {chatMessageList.map((chatMessage: chatMessageType, index: number) => {
-        if (index === 0)
-          return (
-            <div key={chatMessage.id} className="relative">
-              <Image
-                alt="alda"
-                src="/icons/alda.svg"
-                width={100}
-                height={100}
-                className="absolute left-[5rem] bottom-[2.7rem] -z-1"
-              />
-              <div className="mt-20 relative">
+    <article className="max-w-[28.125rem]">
+      <Image
+        alt="alda"
+        src="/icons/alda.svg"
+        width={100}
+        height={100}
+        className="absolute left-[6rem] top-[1.5rem] -z-1"
+      />
+      <div className="mt-[5.375rem] z-30 relative">
+        {chatMessageList.map((chatMessage: chatMessageType, index: number) => {
+          if (
+            chatMessage.isMine === false &&
+            index === chatMessageList.length - 1 &&
+            index > 0
+          )
+            return (
+              <div key={chatMessage.id}>
                 <ChatMessage
                   message={chatMessage.message}
                   isMine={chatMessage.isMine}
+                  key={chatMessage.id}
                 />
+                <SelectMessage drugDatabase={drugDatabase} />
               </div>
-            </div>
-          );
-        if (
-          chatMessage.isMine === false &&
-          index === chatMessageList.length - 1 &&
-          index > -1
-        )
+            );
           return (
-            <div key={chatMessage.id}>
-              <ChatMessage
-                message={chatMessage.message}
-                isMine={chatMessage.isMine}
-                key={chatMessage.id}
-              />
-              <SelectMessage drugDatabase={drugDatabase} />
-            </div>
+            <ChatMessage
+              message={chatMessage.message}
+              isMine={chatMessage.isMine}
+              key={chatMessage.id}
+            />
           );
-        return (
-          <ChatMessage
-            message={chatMessage.message}
-            isMine={chatMessage.isMine}
-            key={chatMessage.id}
-          />
-        );
-      })}
+        })}
+      </div>
       <div ref={messageEndRef}></div>
     </article>
   );

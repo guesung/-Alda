@@ -24,7 +24,8 @@ export const runOpenAI = async ({
   If you don't know the answer, just say that you don't know. Don't try to make up an answer.`,
     },
   ];
-  if (userInfo.name !== "") {
+  console.log(userInfo);
+  if (userInfo?.name !== "") {
     messageData.push({
       role: "system",
       content: `사용자의 이름은 ${userInfo.name}이야`,

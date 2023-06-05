@@ -33,16 +33,16 @@ export default function SelectMessage({ drugDatabase }: PropsType) {
       };
     });
 
-    await runOpenAI(
+    await runOpenAI({
       drugDatabase,
-      question,
-      [
+      inputValue: question,
+      chatMessageListState: [
         ...chatMessageList,
         { id: chatMessageList.length + 1, message: question, isMine: true },
       ],
-      setChatMessageList,
-      userInfo
-    );
+      setChatMessageListState: setChatMessageList,
+      userInfo,
+    });
     setIsTyping(false);
   };
   if (!isTyping)
