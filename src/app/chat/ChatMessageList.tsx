@@ -4,29 +4,22 @@ import ChatMessage from "@components/chatMessage";
 
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { chatMessageListState, isTypingState, userInfoState } from "store";
 import { chatMessageType, drugType, userInfoType } from "types/chat";
 import SelectMessage from "./SelectMessage";
 
 interface PropsType {
-  userInfoProps: userInfoType;
   drugDatabase: drugType[];
 }
 
-export default function ChatMessageList({
-  userInfoProps,
-  drugDatabase,
-}: PropsType) {
+export default function ChatMessageList({ drugDatabase }: PropsType) {
   const [chatMessageList, setChatMessageList] =
     useRecoilState(chatMessageListState);
   const messageEndRef = useRef<HTMLDivElement | null>(null);
-  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
-  const [isTyping, setIsTyping] = useRecoilState(isTypingState);
+  const userInfo = useRecoilValue(userInfoState);
+  const isTyping = useRecoilValue(isTypingState);
 
-  useEffect(() => {
-    setUserInfo(userInfoProps);
-  }, [setUserInfo, userInfoProps]);
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chatMessageList, userInfo, isTyping]);

@@ -14,9 +14,14 @@ const chatMessageListState = atom({
 const userInfoState = atom({
   key: "userInfoState",
   default: {
-    name: "",
+    name: "알다",
     drug: "",
-    selectQuestionList: ["주의 사항", "유의 사항"],
+    selectQuestionList: [
+      "복용 방법과 시간",
+      "피해야 할 약, 음식",
+      "부작용 대처법",
+      "보관 방법",
+    ],
   },
 });
 
