@@ -24,15 +24,24 @@ export default function SelectMessage({
     if (isTyping) return;
     setIsTyping(true);
 
-    const thisQuestionIndex = userInfo.selectQuestionList.findIndex(
-      (selectQuestion) => selectQuestion.question === question
-    );
-    let questionList = [...userInfo.selectQuestionList];
-
-    questionList[thisQuestionIndex] = {
-      question,
-      isSelected: true,
-    };
+    const questionList = userInfo.selectQuestionList.map((selectQuestion) => {
+      return selectQuestion.question === question
+        ? {
+            question,
+            isSelected: true,
+          }
+        : selectQuestion;
+    });
+    // const questionList = userInfo.selectQuestionList.map((selectQuestion) => {
+    //   if (selectQuestion.question === question) {
+    //     return {
+    //       question,
+    //       isSelected: true,
+    //     };
+    //   } else {
+    //     return selectQuestion;
+    //   }
+    // });
 
     let newChatMessageList = [...chatMessageList];
     const thisMessageIndex = newChatMessageList.findIndex(
