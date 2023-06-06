@@ -1,13 +1,19 @@
 export interface chatMessageType {
+  type: string;
   id: number;
-  message: string;
+  message: string | string[];
   isMine: boolean;
+}
+
+export interface selectQuestionType {
+  question: string;
+  isSelected: boolean;
 }
 
 export interface userInfoType {
   name: string;
   drug: string;
-  selectQuestionList: string[];
+  selectQuestionList: selectQuestionType[];
 }
 
 export interface drugType {
@@ -17,7 +23,7 @@ export interface drugType {
   efcyQesitm: string;
   entpName: string;
   intrcQesitm: string;
-  itemImage: any; // as the type is not defined, you may use 'any' or replace it with the correct type when known
+  itemImage: string;
   itemName: string;
   itemSeq: string;
   openDe: string;

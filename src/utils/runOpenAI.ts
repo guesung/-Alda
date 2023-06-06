@@ -2,13 +2,21 @@ import { chatMessageType, drugType, userInfoType } from "types/chat";
 
 const APIURL = "https://api.openai.com/v1/chat/completions";
 
-export const runOpenAI = async (
-  drugDatabase: drugType[],
-  inputValue: string,
-  chatMessageListState: chatMessageType[],
-  setChatMessageListState: (answer: any) => void,
-  userInfo: userInfoType
-) => {
+interface PropsType {
+  drugDatabase: drugType[];
+  inputValue: string;
+  chatMessageListState: chatMessageType[];
+  setChatMessageListState: (answer: any) => void;
+  userInfo: userInfoType;
+}
+
+export const runOpenAI = async ({
+  drugDatabase,
+  inputValue,
+  chatMessageListState,
+  setChatMessageListState,
+  userInfo,
+}: PropsType) => {
   const messageData = [
     {
       role: "system",
@@ -16,7 +24,7 @@ export const runOpenAI = async (
   If you don't know the answer, just say that you don't know. Don't try to make up an answer.`,
     },
   ];
-  if (userInfo.name !== "") {
+  if (userInfo?.name !== "") {
     messageData.push({
       role: "system",
       content: `사용자의 이름은 ${userInfo.name}이야`,
@@ -92,9 +100,10 @@ export const runOpenAI = async (
       const { content } = delta;
       if (content) {
         if (isFirst) {
-          setChatMessageListState((prev: chatMessageType[]) => [
+          setChatMessageListState([
             ...chatMessageListState,
             {
+              type: "message",
               id: chatMessageListState.length + 1,
               message: content,
               isMine: false,
@@ -105,6 +114,7 @@ export const runOpenAI = async (
           setChatMessageListState((prev: chatMessageType[]) => [
             ...prev.slice(0, prev.length - 1),
             {
+              type: "message",
               id: prev.length,
               message: prev[prev.length - 1].message + content,
               isMine: false,
@@ -114,4 +124,13 @@ export const runOpenAI = async (
       }
     }
   }
+  setChatMessageListState((prev: chatMessageType[]) => [
+    ...prev,
+    {
+      type: "button",
+      id: prev.length + 1,
+      message: userInfo.selectQuestionList,
+      isMine: false,
+    },
+  ]);
 };

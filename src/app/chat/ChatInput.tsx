@@ -13,17 +13,15 @@ interface PropsType {
 
 export default function ChatInput({ drugDatabase }: PropsType) {
   const [input, setInput] = useState<string>("");
+  const [autoCompleteWordList, setAutoCompleteWordList] = useState<string[]>(
+    []
+  );
+  const [toastMessage, setToastMessage] = useState<string>("");
 
   const [isTyping, setIsTyping] = useRecoilState(isTypingState);
   const [chatMessageList, setChatMessageList] =
     useRecoilState(chatMessageListState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
-
-  const [autoCompleteWordList, setAutoCompleteWordList] = useState<string[]>(
-    []
-  );
-
-  const [toastMessage, setToastMessage] = useState<string>("");
 
   useEffect(() => {
     const debounce = setTimeout(() => {
@@ -63,21 +61,31 @@ export default function ChatInput({ drugDatabase }: PropsType) {
 
     setChatMessageList((chatMessageList) => [
       ...chatMessageList,
-      { id: chatMessageList.length + 1, message: input, isMine: true },
+      {
+        type: "message",
+        id: chatMessageList.length + 1,
+        message: input,
+        isMine: true,
+      },
     ]);
 
     const inputSave = input;
     setInput("");
-    await runOpenAI(
+    await runOpenAI({
       drugDatabase,
-      inputSave,
-      [
+      inputValue: inputSave,
+      chatMessageListState: [
         ...chatMessageList,
-        { id: chatMessageList.length + 1, message: inputSave, isMine: true },
+        {
+          type: "message",
+          id: chatMessageList.length + 1,
+          message: inputSave,
+          isMine: true,
+        },
       ],
-      setChatMessageList,
-      userInfo
-    );
+      setChatMessageListState: setChatMessageList,
+      userInfo,
+    });
     setIsTyping(false);
   };
 
@@ -92,16 +100,21 @@ export default function ChatInput({ drugDatabase }: PropsType) {
         drug: word,
       });
     }
-    await runOpenAI(
+    await runOpenAI({
       drugDatabase,
-      word,
-      [
+      inputValue: word,
+      chatMessageListState: [
         ...chatMessageList,
-        { id: chatMessageList.length + 1, message: word, isMine: true },
+        {
+          type: "message",
+          id: chatMessageList.length + 1,
+          message: word,
+          isMine: true,
+        },
       ],
-      setChatMessageList,
-      userInfo
-    );
+      setChatMessageListState: setChatMessageList,
+      userInfo,
+    });
     setIsTyping(false);
   };
 
