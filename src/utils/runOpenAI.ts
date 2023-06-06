@@ -130,7 +130,7 @@ export const runOpenAI = async ({
     {
       type: "button",
       id: prev.length + 1,
-      message: "끝",
+      message: userInfo.selectQuestionList,
       isMine: false,
     },
   ]);

@@ -6,8 +6,7 @@ import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { chatMessageListState, isTypingState, userInfoState } from "store";
-import { chatMessageType, drugType, userInfoType } from "types/chat";
-import SelectMessage from "./SelectMessage";
+import { chatMessageType, drugType } from "types/chat";
 
 interface PropsType {
   drugDatabase: drugType[];
@@ -23,6 +22,7 @@ export default function ChatMessageList({ drugDatabase }: PropsType) {
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chatMessageList, userInfo, isTyping]);
+
   console.log(chatMessageList);
   return (
     <article className="max-w-[28.125rem]">
@@ -34,7 +34,7 @@ export default function ChatMessageList({ drugDatabase }: PropsType) {
         className="absolute left-[6rem] top-[1.5rem] -z-1"
       />
       <div className="mt-[5.375rem] z-30 relative">
-        {chatMessageList.map((chatMessage: chatMessageType, index: number) => {
+        {chatMessageList.map((chatMessage: chatMessageType) => {
           return (
             <ChatMessage
               chatMessage={chatMessage}

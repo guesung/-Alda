@@ -53,6 +53,8 @@ export default function ChatMessage({
       </div>
     );
   } else {
-    return <SelectMessage drugDatabase={drugDatabase} />;
+    return (
+      <SelectMessage drugDatabase={drugDatabase} chatMessage={chatMessage} />
+    );
   }
 }

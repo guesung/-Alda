@@ -18,10 +18,22 @@ const userInfoState = atom({
     name: "알다",
     drug: "",
     selectQuestionList: [
-      "복용 방법과 시간",
-      "피해야 할 약, 음식",
-      "부작용 대처법",
-      "보관 방법",
+      {
+        question: "복용 방법과 시간",
+        isSelected: false,
+      },
+      {
+        question: "피해야 할 약, 음식",
+        isSelected: false,
+      },
+      {
+        question: "부작용 대처법",
+        isSelected: false,
+      },
+      {
+        question: "보관 방법",
+        isSelected: false,
+      },
     ],
   },
 });
