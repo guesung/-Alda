@@ -121,7 +121,7 @@ export default function ChatInput({ drugDatabase }: PropsType) {
   const heightValue = `${Math.min(autoCompleteWordList.length, 4) * 3.125}rem`;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 m-auto h-[4rem] bg-[#FFF] shadow-lg flex justify-center items-center ">
+    <div className="fixed bottom-0 left-0 right-0 m-auto h-[4rem] bg-[#FFF] max-w-[28.125rem] shadow-lg flex justify-center items-center">
       {toastMessage.length > 0 && <Toast message={toastMessage} />}
       <div
         className="absolute overflow-scroll w-full"
