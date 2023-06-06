@@ -41,7 +41,7 @@ export default function SelectMessage({
     newChatMessageList[thisMessageIndex] = {
       id: chatMessage.id,
       type: "button",
-      message: questionList,
+      message: questionList as any,
       isMine: true,
     };
     console.log(newChatMessageList);
