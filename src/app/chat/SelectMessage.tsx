@@ -4,10 +4,10 @@ import { runOpenAI } from "@utils/runOpenAI";
 import clsx from "clsx";
 import { useRecoilState } from "recoil";
 import { chatMessageListState, isTypingState, userInfoState } from "store";
-import { chatMessageType, selectQuestionType } from "types/chat";
+import { chatMessageType, drugType, selectQuestionType } from "types/chat";
 
 interface PropsType {
-  drugDatabase: any[];
+  drugDatabase: drugType[];
   chatMessage: chatMessageType;
 }
 
@@ -21,7 +21,8 @@ export default function SelectMessage({
     useRecoilState(chatMessageListState);
   const handleSelectClick = async (question: string) => {
     setIsTyping(true);
-    if (chatMessage.message.some((it) => it.isSelected === true)) return;
+    if (typeof chatMessage.message === "string") return;
+    if (chatMessage.message.some((it: any) => it.isSelected === true)) return;
     const questionList = userInfo.selectQuestionList.map((selectQuestion) => {
       return selectQuestion.question === question
         ? {

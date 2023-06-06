@@ -20,9 +20,8 @@ export default function ChatMessage({
     else tts.play();
   };
 
-  if (chatMessage.type === "message") {
-    return (
-      <div
+  return chatMessage.type === "message" ? (
+    <div
         className={clsx(
           "flex",
           chatMessage.isMine ? "flex-row-reverse" : "flex-row",
@@ -51,10 +50,7 @@ export default function ChatMessage({
           </div>
         )}
       </div>
-    );
-  } else {
-    return (
-      <SelectMessage drugDatabase={drugDatabase} chatMessage={chatMessage} />
-    );
-  }
+  ) : (
+    <SelectMessage drugDatabase={drugDatabase} chatMessage={chatMessage} />
+  );
 }
