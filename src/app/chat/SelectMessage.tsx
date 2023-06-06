@@ -32,28 +32,19 @@ export default function SelectMessage({
           }
         : selectQuestion;
     });
-    // const questionList = userInfo.selectQuestionList.map((selectQuestion) => {
-    //   if (selectQuestion.question === question) {
-    //     return {
-    //       question,
-    //       isSelected: true,
-    //     };
-    //   } else {
-    //     return selectQuestion;
-    //   }
-    // });
 
-    let newChatMessageList = [...chatMessageList];
-    const thisMessageIndex = newChatMessageList.findIndex(
-      (message) => message.id === chatMessage.id
-    );
-    newChatMessageList[thisMessageIndex] = {
-      id: chatMessage.id,
-      type: "button",
-      message: questionList as any,
-      isMine: true,
-    };
-    console.log(newChatMessageList);
+    const newChatMessageList = chatMessageList.map((item) => {
+      if (item.id === chatMessage.id) {
+        return {
+          id: chatMessage.id,
+          type: "button",
+          message: questionList as any,
+          isMine: true,
+        };
+      } else {
+        return item;
+      }
+    });
 
     setUserInfo((userInfo) => {
       return {
