@@ -4,7 +4,7 @@ import { runOpenAI } from "@utils/runOpenAI";
 import clsx from "clsx";
 import { useRecoilState } from "recoil";
 import { chatMessageListState, isTypingState, userInfoState } from "store";
-import { chatMessageType } from "types/chat";
+import { chatMessageType, selectQuestionType } from "types/chat";
 
 interface PropsType {
   drugDatabase: any[];
@@ -79,9 +79,9 @@ export default function SelectMessage({
   };
 
   return (
-    <div className="flex overflow-scroll gap-3">
+    <div className="flex overflow-scroll gap-3 mb-4">
       {typeof chatMessage.message !== "string" &&
-        chatMessage.message.map((messageList, index) => (
+        chatMessage.message.map((messageList: any, index: number) => (
           <div
             key={index}
             className={clsx(
