@@ -15,7 +15,7 @@ async function getDrugData(num: number) {
 
 export default async function Page() {
   const requests = [];
-  for (let i = 1; i <= 450; i++) {
+  for (let i = 1; i <= 50; i++) {
     requests.push(getDrugData(i));
   }
 
