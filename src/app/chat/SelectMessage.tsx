@@ -19,11 +19,9 @@ export default function SelectMessage({
   const [isTyping, setIsTyping] = useRecoilState(isTypingState);
   const [chatMessageList, setChatMessageList] =
     useRecoilState(chatMessageListState);
-
   const handleSelectClick = async (question: string) => {
-    if (isTyping) return;
     setIsTyping(true);
-
+    if (chatMessage.message.some((it) => it.isSelected === true)) return;
     const questionList = userInfo.selectQuestionList.map((selectQuestion) => {
       return selectQuestion.question === question
         ? {

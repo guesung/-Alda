@@ -24,7 +24,6 @@ export const runOpenAI = async ({
   If you don't know the answer, just say that you don't know. Don't try to make up an answer.`,
     },
   ];
-  console.log(userInfo);
   if (userInfo?.name !== "") {
     messageData.push({
       role: "system",
