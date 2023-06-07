@@ -23,7 +23,7 @@ export default function Header() {
         src="/icons/close.svg"
         width={15}
         height={15}
-        className="absolute right-0"
+        className="absolute right-5"
       />
     </header>
   );

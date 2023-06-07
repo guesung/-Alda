@@ -64,7 +64,7 @@ export const runOpenAI = async ({
     body: JSON.stringify({
       model: "gpt-3.5-turbo",
       messages: messageData as any,
-      max_tokens: 200,
+      max_tokens: 300,
       temperature: 0.7,
       stream: true,
       top_p: 1,
