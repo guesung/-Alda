@@ -19,10 +19,15 @@ export default function SelectMessage({
   const [isTyping, setIsTyping] = useRecoilState(isTypingState);
   const [chatMessageList, setChatMessageList] =
     useRecoilState(chatMessageListState);
+
   const handleSelectClick = async (question: string) => {
     setIsTyping(true);
     if (typeof chatMessage.message === "string") return;
     if (chatMessage.message.some((it: any) => it.isSelected === true)) return;
+    const updatedSelectQuestionList = userInfo.selectQuestionList.filter(
+      (item) => item.question !== question
+    );
+
     const questionList = userInfo.selectQuestionList.map((selectQuestion) => {
       return selectQuestion.question === question
         ? {
@@ -48,32 +53,32 @@ export default function SelectMessage({
     setUserInfo((userInfo) => {
       return {
         ...userInfo,
-        selectQuestionList: userInfo.selectQuestionList.filter(
-          (item) => item.question !== question
-        ),
+        selectQuestionList: updatedSelectQuestionList,
       };
     });
 
-    await runOpenAI({
-      drugDatabase,
-      inputValue: question,
-      chatMessageListState: [
-        ...newChatMessageList,
-        {
-          type: "message",
-          id: chatMessageList.length + 1,
-          message: question,
-          isMine: true,
+    try {
+      await runOpenAI({
+        drugDatabase,
+        inputValue: question,
+        chatMessageListState: [
+          ...newChatMessageList,
+          {
+            type: "message",
+            id: chatMessageList.length + 1,
+            message: question,
+            isMine: true,
+          },
+        ],
+        setChatMessageListState: setChatMessageList,
+        userInfo: {
+          ...userInfo,
+          selectQuestionList: updatedSelectQuestionList,
         },
-      ],
-      setChatMessageListState: setChatMessageList,
-      userInfo: {
-        ...userInfo,
-        selectQuestionList: userInfo.selectQuestionList.filter(
-          (item) => item.question !== question
-        ),
-      },
-    });
+      });
+    } catch (e) {
+      console.log(e);
+    }
     setIsTyping(false);
   };
 

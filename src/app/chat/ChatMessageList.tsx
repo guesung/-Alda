@@ -30,9 +30,9 @@ export default function ChatMessageList({ drugDatabase }: PropsType) {
         src="/icons/alda.svg"
         width={100}
         height={100}
-        className="absolute left-[6rem] top-[1.5rem] -z-1"
+        className="left-[6rem] top-[1.5rem] -z-1 absolute"
       />
-      <div className="mt-[5.375rem] z-30 relative">
+      <div className="mt-[5.375rem] z-30 max-w-[28.125rem] relative">
         {chatMessageList.map((chatMessage: chatMessageType) => (
           <ChatMessage
             chatMessage={chatMessage}

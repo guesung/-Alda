@@ -16,14 +16,14 @@ export default function Header() {
   return deviceType !== "unknown" ? (
     <div></div>
   ) : (
-    <header className="h-[3.5rem] flex justify-center items-center relative">
+    <header className="h-[3.5rem] flex justify-center items-center absolute inset-x-0 m-auto">
       <p className="text-[1.25rem]">알다와 대화중</p>
       <Image
         alt="home"
         src="/icons/close.svg"
         width={15}
         height={15}
-        className="absolute right-0"
+        className="absolute right-5"
       />
     </header>
   );

@@ -121,7 +121,7 @@ export default function ChatInput({ drugDatabase }: PropsType) {
   const heightValue = `${Math.min(autoCompleteWordList.length, 4) * 3.125}rem`;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 m-auto h-[4rem] bg-[#FFF] shadow-lg flex justify-center items-center ">
+    <div className="fixed bottom-0 left-0 right-0 m-auto h-[4rem] bg-[#FFF] max-w-[28.125rem] shadow-lg flex justify-center items-center">
       {toastMessage.length > 0 && <Toast message={toastMessage} />}
       <div
         className="absolute overflow-scroll w-full"
@@ -145,7 +145,7 @@ export default function ChatInput({ drugDatabase }: PropsType) {
         <div className="bg-gradient-to-r rounded-[1.875rem] max-h-[2.6rem] flex justify-center items-center from-[#14C8C8] via-[#D5E7F3] to-[#C1CFFF] relative">
           <input
             type="text"
-            className="h-[2.5rem]  border rounded-[1.875rem] px-[1.25rem] text-[#34363C] placeholder-[#ACACAC] focus:outline-none"
+            className="h-[2.5rem]  border rounded-[1.875rem] px-[1.25rem] text-[#34363C] placeholder-[#ACACAC] focus:outline-none max-w-[16.875rem]"
             onChange={(e) => {
               setInput(e.target.value);
             }}
